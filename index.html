@@ -7,6 +7,8 @@
     <title>ZywOo623</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="blog/posts.js" defer></script>
+    <script src="blog/home-posts.js" defer></script>
 </head>
 
 <body>
@@ -23,6 +25,8 @@
 
             <div class="nav-links">
 
+                <a href="#home">HOME</a>
+
                 <a href="#about">ABOUT</a>
 
                 <a href="#projects">PROJECTS</a>
@@ -30,6 +34,8 @@
                 <a href="#skills">SKILLS</a>
 
                 <a href="#roadmap">LEARNING</a>
+
+                <a href="blog/blog.html">BLOG</a>
 
             </div>
 
@@ -646,8 +652,33 @@
 
                 </div>
 
+                <div class="learning-blog-link">
+                    <div>
+                        <span class="learning-blog-label">算法竞赛进阶指南 · 公开笔记</span>
+                        <strong>0x01 位运算</strong>
+                        <p>示例稿；学习进度仍以自己的记录为准。</p>
+                    </div>
+                    <a href="blog/article.html?post=0x01-bit-operation">查看笔记 →</a>
+                </div>
+
             </div>
 
+        </section>
+
+
+
+        <!-- ================= LATEST POST ================= -->
+
+        <section class="section latest-section" aria-labelledby="latest-heading">
+            <div class="section-container">
+                <div class="section-label">05 / BLOG</div>
+                <div class="section-header">
+                    <div><h2 id="latest-heading">Latest post.</h2></div>
+                    <p>整理后的算法笔记与思考。</p>
+                </div>
+                <div id="latest-posts" class="latest-posts"></div>
+                <a class="text-link" href="blog/blog.html">查看 Blog →</a>
+            </div>
         </section>
 
 

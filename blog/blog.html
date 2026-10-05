@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog · ZywOo623</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="blog.css">
+    <script src="posts.js" defer></script>
+    <script src="blog.js" defer></script>
+</head>
+<body>
+    <nav class="navbar" aria-label="主导航">
+        <div class="nav-container">
+            <a href="../index.html#home" class="logo">ZywOo623</a>
+            <div class="nav-links">
+                <a href="../index.html#home">HOME</a>
+                <a href="../index.html#about">ABOUT</a>
+                <a href="../index.html#projects">PROJECTS</a>
+                <a href="../index.html#skills">SKILLS</a>
+                <a href="../index.html#roadmap">LEARNING</a>
+                <a href="blog.html" aria-current="page">BLOG</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="blog-main">
+        <section class="blog-intro section-container">
+            <div class="section-label">ZYWOO623 / WRITING</div>
+            <h1>Blog<span class="heading-dot">.</span></h1>
+            <p>记录算法竞赛学习、题解与思考</p>
+        </section>
+
+        <section class="blog-section section-container" aria-labelledby="categories-heading">
+            <div class="blog-section-heading">
+                <span class="section-label">01 / CATEGORIES</span>
+                <h2 id="categories-heading">文章分类</h2>
+            </div>
+            <div id="category-list" class="category-list" aria-label="筛选文章分类"></div>
+        </section>
+
+        <section class="blog-section section-container" aria-labelledby="posts-heading">
+            <div class="blog-section-heading blog-heading-row">
+                <div>
+                    <span class="section-label">02 / ARTICLES</span>
+                    <h2 id="posts-heading">文章</h2>
+                </div>
+                <span id="post-count" class="post-count"></span>
+            </div>
+            <div id="post-list" class="post-list"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <span>ZywOo623</span>
+            <span>C++ · ALGORITHMS · COMPETITIVE PROGRAMMING</span>
+            <span>© 2026</span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -747,7 +747,7 @@ footer {
 @media (max-width: 480px) {
 
     .nav-links {
-        display: none;
+        display: flex;
     }
 
     .hero h1 {
@@ -765,4 +765,50 @@ footer {
     .section-header h2 {
         font-size: 42px;
     }
+}
+
+/* Blog entry points use the same cards and understated palette as the homepage. */
+.learning-blog-link {
+    margin-top: 42px;
+    padding: 25px 30px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.018);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.learning-blog-link > div { display: flex; flex-direction: column; }
+.learning-blog-label { color: #777c85; font-size: 10px; letter-spacing: .08em; }
+.learning-blog-link strong { margin-top: 7px; font-size: 22px; line-height: 1.2; }
+.learning-blog-link p { margin-top: 8px; color: #777c85; font-size: 12px; }
+.learning-blog-link a,
+.text-link { color: #c8cbd1; font-size: 12px; white-space: nowrap; border-bottom: 1px solid #62666d; padding-bottom: 4px; }
+.learning-blog-link a:hover,
+.text-link:hover { color: #fff; border-color: #fff; }
+.latest-section { border-top: 1px solid rgba(255,255,255,0.06); }
+.latest-post {
+    min-height: 140px;
+    padding: 28px 30px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.018);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: border-color .2s, background .2s;
+}
+.latest-post:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.035); }
+.latest-post-type { color: #747982; font-size: 10px; }
+.latest-post strong { font-size: 23px; line-height: 1.2; }
+.latest-post-link { margin-top: 10px; color: #a9adb5; font-size: 11px; }
+
+/* Keep all navigation destinations visible on narrow screens. */
+@media (max-width: 800px) {
+    .navbar { height: auto; min-height: 80px; }
+    .nav-container { min-height: 80px; padding: 10px 0; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; }
+    .nav-links { width: 100%; display: flex; flex-wrap: wrap; gap: 4px 15px; }
+    .nav-links a { font-size: 9px; }
+    .learning-blog-link { align-items: flex-start; flex-direction: column; }
+    .section[id] { scroll-margin-top: 110px; }
 }
