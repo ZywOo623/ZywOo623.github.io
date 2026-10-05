@@ -7,6 +7,7 @@
     <title>ZywOo623</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="polish.css">
     <script src="blog/posts.js" defer></script>
     <script src="blog/home-posts.js" defer></script>
 </head>
@@ -15,7 +16,7 @@
 
     <!-- ================= NAVBAR ================= -->
 
-    <nav class="navbar">
+    <nav class="navbar" aria-label="主导航">
 
         <div class="nav-container">
 
@@ -25,7 +26,7 @@
 
             <div class="nav-links">
 
-                <a href="#home">HOME</a>
+                <a href="#home" aria-current="page">HOME</a>
 
                 <a href="#about">ABOUT</a>
 
@@ -51,6 +52,8 @@
         <section id="home" class="hero">
 
             <div class="hero-inner">
+
+                <div class="hero-copy">
 
                 <div class="hero-status">
 
@@ -97,6 +100,32 @@
                         Codeforces
                     </a>
 
+                </div>
+
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="visual-orbit visual-orbit-one"></div>
+                    <div class="visual-orbit visual-orbit-two"></div>
+                    <div class="visual-dot visual-dot-one"></div>
+                    <div class="visual-dot visual-dot-two"></div>
+                    <div class="code-window">
+                        <div class="code-window-header">
+                            <span class="window-lights"><i></i><i></i><i></i></span>
+                            <span>bit_operation.cpp</span>
+                            <span class="window-mark">C++</span>
+                        </div>
+                        <div class="code-window-body">
+                            <span class="code-line"><em>01</em><span class="code-comment">// one problem at a time</span></span>
+                            <span class="code-line"><em>02</em><span><b>unsigned</b> lowbit(<b>unsigned</b> x) {</span></span>
+                            <span class="code-line"><em>03</em><span>&nbsp;&nbsp;<strong>return</strong> x &amp; (~x + 1u);</span></span>
+                            <span class="code-line"><em>04</em><span>}</span></span>
+                            <span class="code-line code-line-empty"><em>05</em></span>
+                            <span class="code-line"><em>06</em><span class="code-comment">// learn. build. repeat.</span></span>
+                        </div>
+                        <div class="code-window-footer"><span class="terminal-signal"></span> COMPETITIVE PROGRAMMING <span>↗</span></div>
+                    </div>
+                    <div class="visual-index">ZYWOO623 / 001</div>
                 </div>
 
 
