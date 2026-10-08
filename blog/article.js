@@ -94,6 +94,7 @@ async function loadArticle() {
         }
     } catch (error) {
         console.error("Article load failed:", error);
-        showError("文章加载失败。请通过本地服务器或网站地址访问，并检查网络连接。");
+        const detail = error instanceof Error ? `（${error.message}）` : "";
+        showError(`文章加载失败${detail}。请刷新页面重试。`);
     }
 }
