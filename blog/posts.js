@@ -8,6 +8,16 @@ window.BLOG_CATEGORIES = [
 
 window.BLOG_POSTS = [
     {
+        slug: "0x02-recursion",
+        title: "学《算法竞赛进阶指南》0x02：我终于分清了递归的“返回”和“撤销”",
+        series: "《算法竞赛进阶指南》学习笔记",
+        date: "2026-10-11",
+        category: "算法竞赛进阶指南",
+        tags: ["递推", "递归", "回溯", "状态枚举", "C++"],
+        description: "从选与不选、递归返回和撤销选择，到开关问题与 CF550B 的状态枚举。",
+        file: "posts/algorithm-guide/0x02-recursion.md"
+    },
+    {
         slug: "0x01-bit-operation",
         title: "0x01 位运算：从“看得懂二进制”到“能把代码写出来”",
         series: "《算法竞赛进阶指南》学习笔记",
