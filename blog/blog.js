@@ -1,5 +1,5 @@
 const categories = window.BLOG_CATEGORIES;
-const posts = [...window.BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
+const posts = [...window.BLOG_POSTS].sort((a, b) => a.date.localeCompare(b.date));
 const categoryList = document.getElementById("category-list");
 const postList = document.getElementById("post-list");
 const postCount = document.getElementById("post-count");
