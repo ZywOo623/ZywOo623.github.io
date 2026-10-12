@@ -1,6 +1,56 @@
 (() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Keep the full navigation available without JavaScript; enhance it on small screens.
+    const navbar = document.querySelector(".navbar");
+    const navLinks = navbar?.querySelector(".nav-links");
+    if (navbar && navLinks) {
+        const mobileMenu = window.matchMedia("(max-width: 800px)");
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "nav-toggle";
+        toggle.setAttribute("aria-controls", "site-nav-links");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "打开导航");
+        const icon = document.createElement("span");
+        icon.className = "nav-toggle-icon";
+        icon.setAttribute("aria-hidden", "true");
+        const label = document.createElement("span");
+        label.className = "nav-toggle-label";
+        label.textContent = "MENU";
+        toggle.append(icon, label);
+        navLinks.id = "site-nav-links";
+        navLinks.before(toggle);
+        navbar.classList.add("has-menu");
+
+        function setMenuOpen(open, restoreFocus = false) {
+            const active = open && mobileMenu.matches;
+            navbar.classList.toggle("menu-open", active);
+            document.body.classList.toggle("nav-locked", active);
+            navLinks.inert = mobileMenu.matches && !active;
+            toggle.setAttribute("aria-expanded", String(active));
+            toggle.setAttribute("aria-label", active ? "关闭导航" : "打开导航");
+            label.textContent = active ? "CLOSE" : "MENU";
+            if (active) navLinks.querySelector("a")?.focus();
+            else if (restoreFocus) toggle.focus();
+        }
+
+        toggle.addEventListener("click", () => setMenuOpen(!navbar.classList.contains("menu-open")));
+        navLinks.addEventListener("click", event => {
+            if (event.target.closest("a")) setMenuOpen(false);
+        });
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && navbar.classList.contains("menu-open")) {
+                setMenuOpen(false, true);
+            }
+        });
+        document.addEventListener("pointerdown", event => {
+            if (navbar.classList.contains("menu-open") && !navbar.contains(event.target)) setMenuOpen(false);
+        });
+        mobileMenu.addEventListener("change", () => setMenuOpen(false));
+        setMenuOpen(false);
+    }
+
     // A thin reading indicator works on long articles and the homepage alike.
     const progress = document.createElement("div");
     progress.className = "scroll-progress";
@@ -60,11 +110,30 @@
             ".project-card, .skill-row, .learning-blog-link, .latest-post, .post-card-link"
         ).forEach(card => {
             card.classList.add("spotlight-card");
+            const tilts = card.matches(".project-card, .latest-post, .post-card-link");
+            if (tilts) card.classList.add("tilt-card");
+            let pointerFrame = 0;
             card.addEventListener("pointermove", event => {
                 const bounds = card.getBoundingClientRect();
-                card.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
-                card.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+                const x = event.clientX - bounds.left;
+                const y = event.clientY - bounds.top;
+                if (pointerFrame) return;
+                pointerFrame = window.requestAnimationFrame(() => {
+                    card.style.setProperty("--pointer-x", `${x}px`);
+                    card.style.setProperty("--pointer-y", `${y}px`);
+                    if (tilts) {
+                        card.style.setProperty("--tilt-x", `${(0.5 - y / bounds.height) * 5}deg`);
+                        card.style.setProperty("--tilt-y", `${(x / bounds.width - 0.5) * 5}deg`);
+                    }
+                    pointerFrame = 0;
+                });
             }, { passive: true });
+            if (tilts) card.addEventListener("pointerleave", () => {
+                if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+                pointerFrame = 0;
+                card.style.setProperty("--tilt-x", "0deg");
+                card.style.setProperty("--tilt-y", "0deg");
+            });
         });
     }
 
@@ -112,10 +181,11 @@
     }
 
     const canvas = document.getElementById("bitfield-canvas");
-    if (!canvas || reduceMotion || !window.matchMedia("(min-width: 801px)").matches) return;
+    if (!canvas || reduceMotion) return;
 
     const context = canvas.getContext("2d");
     if (!context) return;
+    const desktopCanvas = window.matchMedia("(min-width: 801px)");
     const visual = canvas.parentElement;
     const bits = Array.from({ length: 78 }, (_, index) => ({
         x: Math.random(),
@@ -130,6 +200,19 @@
     let lastFrame = 0;
     let inView = true;
 
+    function canDraw() {
+        return inView && desktopCanvas.matches && !document.hidden;
+    }
+
+    function startCanvas() {
+        if (canDraw() && !frameId) frameId = window.requestAnimationFrame(draw);
+    }
+
+    function stopCanvas() {
+        if (frameId) window.cancelAnimationFrame(frameId);
+        frameId = 0;
+    }
+
     function resizeCanvas() {
         const bounds = visual.getBoundingClientRect();
         const density = Math.min(window.devicePixelRatio || 1, 2);
@@ -143,7 +226,7 @@
     }
 
     function draw(time) {
-        if (!inView) {
+        if (!canDraw()) {
             frameId = 0;
             return;
         }
@@ -196,12 +279,25 @@
     } else {
         window.addEventListener("resize", resizeCanvas);
     }
-    new IntersectionObserver(entries => {
-        inView = entries[0].isIntersecting;
-        if (inView && !frameId) frameId = window.requestAnimationFrame(draw);
-    }).observe(visual);
+    if ("IntersectionObserver" in window) {
+        new IntersectionObserver(entries => {
+            inView = entries[0].isIntersecting;
+            if (inView) startCanvas();
+            else stopCanvas();
+        }).observe(visual);
+    }
+    desktopCanvas.addEventListener("change", () => {
+        if (desktopCanvas.matches) {
+            resizeCanvas();
+            startCanvas();
+        } else stopCanvas();
+    });
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopCanvas();
+        else startCanvas();
+    });
 
     resizeCanvas();
-    frameId = window.requestAnimationFrame(draw);
+    startCanvas();
 })();
 
