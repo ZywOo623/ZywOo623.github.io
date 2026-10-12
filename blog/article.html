@@ -34,12 +34,25 @@
 
     <main class="blog-main article-main section-container">
         <a class="back-link" href="blog.html">← 返回 Blog</a>
-        <header id="article-header" class="article-header"></header>
-        <article id="article-content" class="markdown-body" aria-live="polite">
-            <p>正在加载文章…</p>
-        </article>
-        <a class="back-link article-bottom-link" href="blog.html">← 返回 Blog</a>
+        <div class="article-shell">
+            <div class="article-column">
+                <header id="article-header" class="article-header"></header>
+                <article id="article-content" class="markdown-body" aria-live="polite">
+                    <p>正在加载文章…</p>
+                </article>
+                <a class="back-link article-bottom-link" href="blog.html">← 返回 Blog</a>
+            </div>
+            <aside id="article-toc" class="article-toc" aria-label="文章目录" hidden>
+                <div class="toc-heading">
+                    <span>ON THIS PAGE</span>
+                    <span id="toc-progress" class="toc-progress" aria-hidden="true">0%</span>
+                </div>
+                <nav id="toc-links" aria-label="跳转到文章小节"></nav>
+            </aside>
+        </div>
     </main>
+
+    <button id="back-to-top" class="back-to-top" type="button" tabindex="-1" aria-label="返回页面顶部">↑</button>
 
     <footer>
         <div class="footer-container">

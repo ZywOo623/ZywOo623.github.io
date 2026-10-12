@@ -88,6 +88,8 @@
 .empty-posts { grid-column: 1/-1; padding: 42px 30px; border: 1px solid rgba(255,255,255,0.1); color: #8b9099; }
 
 .article-main { min-height: 80vh; max-width: 1200px; }
+.article-shell { display: grid; grid-template-columns: minmax(0, 1fr) 220px; align-items: start; gap: 50px; }
+.article-column { min-width: 0; }
 .back-link { display: inline-block; color: #a6abb4; font-size: 12px; border-bottom: 1px solid #555b65; padding-bottom: 4px; }
 .back-link:hover { color: #fff; border-color: #fff; }
 .article-header { max-width: 850px; padding: 75px 0 48px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -96,6 +98,27 @@
 .article-series { margin-top: 19px; color: #9ba0a9; font-size: 16px; }
 .article-meta { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 25px; color: #6c727c; font-size: 11px; }
 .article-bottom-link { margin-top: 65px; }
+
+.article-toc { position: sticky; top: 120px; max-height: calc(100vh - 150px); margin-top: 75px; overflow-y: auto; scrollbar-width: thin; }
+.toc-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 0 16px 15px; color: #92aaa1; font: 600 10px/1.4 Consolas, "Cascadia Code", monospace; letter-spacing: .12em; }
+.toc-progress { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; border-radius: 50%; color: #b9f582; font-size: 9px; letter-spacing: 0; background: radial-gradient(closest-side, #111b20 78%, transparent 81%), conic-gradient(#b9f582 0deg var(--toc-angle, 0deg), rgba(185,245,130,.13) var(--toc-angle, 0deg) 360deg); }
+.article-toc nav { display: grid; border-left: 1px solid rgba(185,245,130,.18); }
+.article-toc a { display: block; margin-left: -1px; padding: 8px 0 8px 14px; border-left: 2px solid transparent; color: #82968d; font-size: 12px; line-height: 1.55; overflow-wrap: anywhere; transition: color .2s ease, border-color .2s ease; }
+.article-toc a[data-depth="3"] { padding-left: 27px; font-size: 11px; }
+.article-toc a:hover, .article-toc a[aria-current="location"] { color: #dff4df; border-color: #b9f582; }
+.article-toc a:focus-visible { outline: 2px solid #b9f582; outline-offset: -2px; }
+
+.code-frame { max-width: 100%; overflow: hidden; border: 1px solid rgba(185,245,130,.2); border-radius: 12px; background: #101b20; }
+.code-bar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; gap: 15px; padding: 5px 12px 5px 16px; border-bottom: 1px solid rgba(185,245,130,.12); color: #8fa89d; background: rgba(185,245,130,.035); font: 11px/1.4 Consolas, "Cascadia Code", monospace; letter-spacing: .05em; }
+.code-lang { text-transform: uppercase; }
+.code-copy { min-height: 26px; padding: 4px 10px; border: 1px solid rgba(185,245,130,.25); border-radius: 6px; background: rgba(185,245,130,.06); color: #c8ebb4; font: inherit; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
+.code-copy:hover { border-color: rgba(185,245,130,.55); background: rgba(185,245,130,.13); }
+.code-copy:focus-visible, .back-to-top:focus-visible { outline: 2px solid #b9f582; outline-offset: 3px; }
+.markdown-body .code-frame pre { margin: 0; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+
+.back-to-top { position: fixed; z-index: 900; right: 25px; bottom: 25px; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(185,245,130,.35); border-radius: 50%; background: rgba(17,30,29,.93); color: #b9f582; font-size: 22px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.22); opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity .2s ease, transform .2s ease, border-color .2s ease; }
+.back-to-top.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.back-to-top:hover { border-color: #b9f582; }
 
 .markdown-body { max-width: 850px; min-width: 0; padding-top: 45px; color: #c3c7ce; font-size: 16px; line-height: 1.9; overflow-wrap: anywhere; }
 .markdown-body > * + * { margin-top: 22px; }
@@ -134,6 +157,11 @@
     .article-header { padding: 60px 0 38px; }
 }
 
+@media (max-width: 1080px) {
+    .article-shell { display: block; }
+    .article-toc { display: none; }
+}
+
 @media (max-width: 480px) {
     .blog-main { padding-top: 155px; }
     .blog-intro h1 { font-size: 76px; }
@@ -141,4 +169,6 @@
     .post-card-link { padding: 23px; }
     .markdown-body { font-size: 15px; }
     .markdown-body pre { font-size: 12px; }
+    .back-to-top { right: 15px; bottom: 15px; }
 }
+
