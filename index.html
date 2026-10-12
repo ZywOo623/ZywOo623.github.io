@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="polish.css">
     <link rel="stylesheet" href="experience.css">
+    <link rel="stylesheet" href="lab.css">
     <script src="blog/posts.js" defer></script>
     <script src="blog/home-posts.js" defer></script>
     <script src="experience.js" defer></script>
+    <script src="lab.js" defer></script>
 </head>
 
 <body>
@@ -29,6 +31,8 @@
             <div class="nav-links">
 
                 <a href="#home" aria-current="page">HOME</a>
+
+                <a href="#lab">BIT LAB</a>
 
                 <a href="#about">ABOUT</a>
 
@@ -155,6 +159,61 @@
 
             </div>
 
+        </section>
+
+
+        <!-- ================= BIT LAB ================= -->
+        <div class="signal-strip" aria-hidden="true">
+            <div class="signal-track">
+                <span>0101 / THINK IN BITS <i>✦</i> LEARN · BUILD · REPEAT <i>✦</i> 0x01 / BITWISE OPERATIONS <i>✦</i> C++ · ALGORITHMS · BLOG <i>✦</i> THINK IN BITS <i>✦</i></span>
+                <span>0101 / THINK IN BITS <i>✦</i> LEARN · BUILD · REPEAT <i>✦</i> 0x01 / BITWISE OPERATIONS <i>✦</i> C++ · ALGORITHMS · BLOG <i>✦</i> THINK IN BITS <i>✦</i></span>
+            </div>
+        </div>
+
+        <section id="lab" class="section bit-lab-section" aria-labelledby="lab-heading">
+            <div class="section-container">
+                <div class="section-label">00 / INTERACTIVE</div>
+                <div class="lab-heading-row">
+                    <div>
+                        <p class="lab-kicker"><span class="lab-kicker-dot"></span> LIVE ALGORITHM PLAYGROUND</p>
+                        <h2 id="lab-heading">Think in <em>bits.</em></h2>
+                    </div>
+                    <p>点亮或关闭一个二进制位，看看数值、<code>popcount</code> 和 <code>lowbit</code> 如何随之变化。</p>
+                </div>
+
+                <div class="bit-lab" data-value="180">
+                    <div class="lab-panel-main">
+                        <div class="lab-panel-topline">
+                            <span><span class="lab-live-dot"></span> BIT_EXPLORER.EXE</span>
+                            <span>8-BIT / UNSIGNED</span>
+                        </div>
+                        <div class="lab-bit-index" aria-hidden="true"><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span><span>0</span></div>
+                        <div class="lab-bits" role="group" aria-label="切换 8 个二进制位">
+                            <button type="button" class="lab-bit is-on" data-bit="7" aria-label="第 7 位，当前为 1" aria-pressed="true">1</button>
+                            <button type="button" class="lab-bit" data-bit="6" aria-label="第 6 位，当前为 0" aria-pressed="false">0</button>
+                            <button type="button" class="lab-bit is-on" data-bit="5" aria-label="第 5 位，当前为 1" aria-pressed="true">1</button>
+                            <button type="button" class="lab-bit is-on" data-bit="4" aria-label="第 4 位，当前为 1" aria-pressed="true">1</button>
+                            <button type="button" class="lab-bit" data-bit="3" aria-label="第 3 位，当前为 0" aria-pressed="false">0</button>
+                            <button type="button" class="lab-bit is-on" data-bit="2" aria-label="第 2 位，当前为 1" aria-pressed="true">1</button>
+                            <button type="button" class="lab-bit" data-bit="1" aria-label="第 1 位，当前为 0" aria-pressed="false">0</button>
+                            <button type="button" class="lab-bit" data-bit="0" aria-label="第 0 位，当前为 0" aria-pressed="false">0</button>
+                        </div>
+                        <div class="lab-binary-readout"><span>BINARY</span><strong id="lab-binary">1011 0100</strong></div>
+                        <div class="lab-controls">
+                            <button type="button" id="lab-shuffle" class="lab-action lab-action-primary">SHUFFLE <span aria-hidden="true">↗</span></button>
+                            <button type="button" id="lab-reset" class="lab-action">RESET <span aria-hidden="true">↺</span></button>
+                            <span>CLICK A BIT TO TOGGLE</span>
+                        </div>
+                    </div>
+                    <div class="lab-panel-results">
+                        <div class="lab-result lab-result-primary"><span>DECIMAL <small>BASE 10</small></span><strong id="lab-decimal" aria-live="polite">180</strong></div>
+                        <div class="lab-result"><span>HEX <small>BASE 16</small></span><strong id="lab-hex">0xB4</strong></div>
+                        <div class="lab-result"><span>POPCOUNT <small>SET BITS</small></span><strong id="lab-count">4</strong></div>
+                        <div class="lab-result"><span>LOWBIT <small>N &amp; -N</small></span><strong id="lab-lowbit">4</strong></div>
+                        <a class="lab-article-link" href="blog/article.html?post=0x01-bit-operation">从原理到代码：读 0x01 位运算 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+            </div>
         </section>
 
 
@@ -802,4 +861,3 @@
 
 </body>
 </html>
-
