@@ -1,7 +1,15 @@
 const latestPosts = document.getElementById("latest-posts");
+const featured = document.getElementById("hero-featured");
+const sortedPosts = [...window.BLOG_POSTS].sort((a, b) => b.date.localeCompare(a.date));
 
-[...window.BLOG_POSTS]
-    .sort((a, b) => b.date.localeCompare(a.date))
+if (featured && sortedPosts.length) {
+    const post = sortedPosts[0];
+    featured.href = `blog/article.html?post=${encodeURIComponent(post.slug)}`;
+    featured.querySelector("strong").textContent = post.title;
+    featured.setAttribute("aria-label", `阅读最新文章：${post.title}`);
+}
+
+sortedPosts
     .slice(0, 3)
     .forEach(post => {
         const card = document.createElement("a");
@@ -18,3 +26,4 @@ const latestPosts = document.getElementById("latest-posts");
         card.append(type, title, read);
         latestPosts.append(card);
     });
+

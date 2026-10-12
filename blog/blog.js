@@ -21,7 +21,7 @@ function renderPosts(category) {
         return;
     }
 
-    visible.forEach(post => {
+    visible.forEach((post, index) => {
         const card = makeElement("article", "post-card");
         const top = makeElement("div", "post-card-top");
         top.append(
@@ -30,6 +30,7 @@ function renderPosts(category) {
         );
         top.querySelector("time").dateTime = post.date;
 
+        const ordinal = makeElement("span", "post-ordinal", String(index + 1).padStart(2, "0") + " / JOURNAL");
         const title = makeElement("h3", "post-title", post.title);
         const series = makeElement("p", "post-series", post.series);
         const description = makeElement("p", "post-description", post.description);
@@ -40,7 +41,7 @@ function renderPosts(category) {
         const link = makeElement("a", "post-card-link");
         link.href = `article.html?post=${encodeURIComponent(post.slug)}`;
         link.setAttribute("aria-label", `阅读 ${post.title}`);
-        link.append(top, title, series, description, tags, bottom);
+        link.append(top, ordinal, title, series, description, tags, bottom);
         card.append(link);
         postList.append(card);
     });
@@ -61,3 +62,4 @@ allCategories.forEach(category => {
 });
 
 renderPosts("全部");
+
