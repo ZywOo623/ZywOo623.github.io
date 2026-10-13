@@ -19,7 +19,8 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#081217" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css" />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
@@ -29,7 +30,7 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
     <a class="skip-link" href="#main">跳到正文</a>
     <header class="site-header">
       <nav class="site-nav container" aria-label="主导航">
-        <a class="brand" href="/" aria-label="ZywOo623 首页"><span class="brand-mark">Z<span>_</span></span><span class="brand-name">ZYWOO623<small>ALGORITHM SYSTEM</small></span></a>
+        <a class="brand" href="/" aria-label="ZywOo623 首页"><span class="brand-mark"><img src="/avatar-gokou.webp" alt="" width="43" height="43" decoding="async" /></span><span class="brand-name">ZYWOO623<small>ALGORITHM SYSTEM</small></span></a>
         <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="打开导航"><span></span><span></span><span></span></button>
         <div id="nav-links" class="nav-links">
           <a href="/" aria-current={active === 'home' ? 'page' : undefined}>HOME</a>
