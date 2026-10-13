@@ -58,22 +58,12 @@
     progress.append(document.createElement("span"));
     document.body.prepend(progress);
     const progressFill = progress.firstElementChild;
-    const reveal = document.querySelector(".reveal-gates");
-    const revealHero = reveal && document.querySelector(".hero");
-    const revealMedia = window.matchMedia("(min-width: 801px) and (min-height: 761px) and (prefers-reduced-motion: no-preference)");
     let progressPending = false;
 
     function updateProgress() {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
         progressFill.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
-        if (revealHero && revealMedia.matches) {
-            const distance = Math.max(1, revealHero.offsetHeight - window.innerHeight);
-            const phase = Math.min(1, Math.max(0, -revealHero.getBoundingClientRect().top / distance));
-            reveal.style.setProperty("--gate-left", `${-205 * phase}%`);
-            reveal.style.setProperty("--gate-right", `${205 * phase}%`);
-            reveal.style.setProperty("--gate-opacity", String(1 - phase));
-        }
         progressPending = false;
     }
 
@@ -300,4 +290,3 @@
     resizeCanvas();
     startCanvas();
 })();
-

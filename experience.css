@@ -52,21 +52,6 @@ body {
     overflow: hidden;
 }
 
-/* The first screen stays in view while the binary surface opens on scroll. */
-@media (min-width: 801px) and (min-height: 761px) and (prefers-reduced-motion: no-preference) {
-    .hero {
-        display: block;
-        min-height: 165vh;
-        padding: 0 40px;
-    }
-
-    .hero-inner {
-        position: sticky;
-        top: 82px;
-        min-height: calc(100vh - 82px);
-    }
-}
-
 .hero::before {
     content: "";
     position: absolute;
@@ -234,94 +219,6 @@ body {
     box-shadow: 0 0 12px rgba(141, 232, 220, .35);
     animation: code-scan 5.5s ease-in-out infinite;
     pointer-events: none;
-}
-
-.reveal-gates {
-    --gate-left: 0%;
-    --gate-right: 0%;
-    --gate-opacity: 1;
-    position: absolute;
-    z-index: 3;
-    left: 50%;
-    top: 50%;
-    display: flex;
-    width: min(100%, 560px);
-    height: min(500px, 100%);
-    overflow: hidden;
-    border-radius: 24px;
-    pointer-events: none;
-    transform: translate(-50%, -50%) rotate(2deg);
-    box-shadow: 0 35px 90px rgba(0, 0, 0, .38);
-}
-
-.reveal-gate {
-    position: relative;
-    display: grid;
-    place-items: center;
-    flex: 0 0 50%;
-    height: 100%;
-    overflow: hidden;
-    background:
-        linear-gradient(135deg, rgba(141, 232, 220, .1), transparent 36%),
-        repeating-linear-gradient(0deg, transparent 0 28px, rgba(141, 232, 220, .055) 29px),
-        #101d22;
-    border: 1px solid rgba(141, 232, 220, .28);
-    opacity: var(--gate-opacity);
-    will-change: transform;
-}
-
-.reveal-gate-left {
-    transform: translateX(var(--gate-left));
-    border-right-color: rgba(185, 245, 130, .85);
-    box-shadow: inset -7px 0 20px rgba(185, 245, 130, .08);
-}
-
-.reveal-gate-right {
-    transform: translateX(var(--gate-right));
-    border-left-color: rgba(185, 245, 130, .85);
-    box-shadow: inset 7px 0 20px rgba(185, 245, 130, .08);
-}
-
-.reveal-gate span {
-    display: block;
-    width: max-content;
-    color: rgba(141, 232, 220, .52);
-    font: 600 10px/2.8 Consolas, "Cascadia Code", monospace;
-    letter-spacing: .16em;
-    white-space: nowrap;
-    text-shadow: 0 0 10px rgba(141, 232, 220, .16);
-}
-
-.reveal-gate-left span { transform: translateX(28%); }
-.reveal-gate-right span { transform: translateX(-28%); }
-
-.reveal-seam {
-    position: absolute;
-    z-index: 4;
-    top: 0;
-    left: 50%;
-    display: grid;
-    place-items: center;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(transparent, var(--glow-mint), transparent);
-    box-shadow: 0 0 22px 3px rgba(185, 245, 130, .36);
-    opacity: var(--gate-opacity);
-}
-
-.reveal-seam span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: max-content;
-    padding: 9px 12px;
-    border: 1px solid rgba(185, 245, 130, .4);
-    border-radius: 5px;
-    background: #101b1e;
-    color: var(--glow-mint);
-    font: 600 9px/1.2 Consolas, "Cascadia Code", monospace;
-    letter-spacing: .18em;
-    transform: translate(-50%, -50%);
 }
 
 .section-header h2,
@@ -532,12 +429,7 @@ body {
     .hero-featured { margin: 30px auto 0; text-align: left; }
     .hero-visual::before { background: radial-gradient(circle, rgba(105, 169, 122, .2), transparent 70%); }
     #bitfield-canvas { display: none; }
-    .reveal-gates { display: none; }
     .blog-metrics { margin-top: 48px; }
-}
-
-@media (max-height: 760px) {
-    .reveal-gates { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -570,6 +462,4 @@ body {
     .code-window-body::after,
     .hero-featured-pulse { animation: none !important; }
     .code-window:hover { transform: none; }
-    .reveal-gates { display: none; }
 }
-

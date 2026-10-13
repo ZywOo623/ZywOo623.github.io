@@ -47,3 +47,33 @@
 
     render();
 })();
+
+(() => {
+    const scene = document.querySelector(".unveil-section");
+    if (!scene || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const percent = document.getElementById("unveil-percent");
+    scene.classList.add("is-ready");
+    let pending = false;
+
+    function update() {
+        const distance = Math.max(1, scene.offsetHeight - window.innerHeight);
+        const phase = Math.min(1, Math.max(0, -scene.getBoundingClientRect().top / distance));
+        scene.style.setProperty("--unveil-left", `${-102 * phase}%`);
+        scene.style.setProperty("--unveil-right", `${102 * phase}%`);
+        scene.style.setProperty("--unveil-seam-opacity", String(Math.max(0, 1 - phase * 2.2)));
+        scene.style.setProperty("--unveil-trace", String(1 - phase));
+        if (percent) percent.textContent = String(Math.round(phase * 100)).padStart(2, "0");
+        pending = false;
+    }
+
+    function schedule() {
+        if (pending) return;
+        pending = true;
+        window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    update();
+})();
