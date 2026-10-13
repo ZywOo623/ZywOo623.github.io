@@ -51,7 +51,7 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
           <a href="/" data-command-label="首页 home 揭幕"><i>⌂</i><strong>首页</strong><small>HOME</small></a>
           <a href="/#arena" data-command-label="刷题记录 codeforces problems"><i>↗</i><strong>刷题记录</strong><small>PROBLEMS</small></a>
           <a href="/#graph" data-command-label="图算法 graph dijkstra 最短路"><i>◇</i><strong>图算法实验</strong><small>GRAPH LAB</small></a>
-          <a href="/#sort" data-command-label="排序竞速 sort race 冒泡 快速排序"><i>▥</i><strong>排序竞速</strong><small>SORT RACE</small></a>
+          <a href="/#manifesto" data-command-label="创作 学习 think build share"><i>✦</i><strong>创作与学习</strong><small>PROCESS</small></a>
           <a href="/#lab" data-command-label="位运算 bit lab 二进制"><i>01</i><strong>位运算实验</strong><small>BIT LAB</small></a>
           <a href="/#learning" data-command-label="学习记录 learning 算法竞赛进阶指南"><i>◎</i><strong>学习记录</strong><small>LEARNING</small></a>
         </div>
@@ -60,7 +60,7 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
           {commandPosts.map((post, index) => <a href={`/blog/${post.id.split('/').at(-1)}/`} data-command-label={`${post.data.title} ${post.data.category} ${post.data.tags.join(' ')}`}><i>{String(index + 1).padStart(2, '0')}</i><strong>{post.data.title}</strong><small>POST</small></a>)}
         </div>
       </div>
-      <p class="command-empty" hidden>没有找到匹配内容。试试“排序”或“博客”。</p>
+      <p class="command-empty" hidden>没有找到匹配内容。试试“学习”或“博客”。</p>
       <div class="command-foot"><span>↑ ↓ 浏览 · ↵ 打开 · ESC 关闭</span><span>CTRL / ⌘ + K</span></div>
     </dialog>
     <main id="main"><slot /></main>
@@ -90,10 +90,12 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
         if (event.key === 'Escape') closeMenu();
       });
       const fill = document.querySelector<HTMLElement>('.reading-progress span');
+      const header = document.querySelector<HTMLElement>('.site-header');
       let scheduled = false;
       function updateProgress() {
         const length = document.documentElement.scrollHeight - window.innerHeight;
         if (fill) fill.style.width = `${length > 0 ? Math.min(100, window.scrollY / length * 100) : 0}%`;
+        header?.classList.toggle('is-floating', window.scrollY > 42);
         scheduled = false;
       }
       window.addEventListener('scroll', () => {
@@ -108,6 +110,51 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
             card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
             card.style.setProperty('--my', `${event.clientY - rect.top}px`);
           }, { passive: true });
+        });
+        let pointerFrame = 0;
+        document.addEventListener('pointermove', event => {
+          if (pointerFrame) return;
+          const x = event.clientX;
+          const y = event.clientY;
+          pointerFrame = requestAnimationFrame(() => {
+            document.documentElement.style.setProperty('--cursor-x', `${x}px`);
+            document.documentElement.style.setProperty('--cursor-y', `${y}px`);
+            pointerFrame = 0;
+          });
+        }, { passive: true });
+        document.querySelectorAll<HTMLElement>('.project-tile').forEach(card => {
+          card.addEventListener('pointermove', event => {
+            const box = card.getBoundingClientRect();
+            const x = (event.clientX - box.left) / box.width - .5;
+            const y = (event.clientY - box.top) / box.height - .5;
+            card.style.setProperty('--mx', `${event.clientX - box.left}px`);
+            card.style.setProperty('--my', `${event.clientY - box.top}px`);
+            card.style.transform = `perspective(950px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+          }, { passive: true });
+          card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+        });
+        document.querySelectorAll<HTMLElement>('.hero-actions .action, .manifesto-bottom .action').forEach(button => {
+          button.classList.add('is-magnetic');
+          button.addEventListener('pointermove', event => {
+            const box = button.getBoundingClientRect();
+            button.style.translate = `${(event.clientX - box.left - box.width / 2) * .14}px ${(event.clientY - box.top - box.height / 2) * .14}px`;
+          }, { passive: true });
+          button.addEventListener('pointerleave', () => { button.style.translate = '0 0'; });
+        });
+      }
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+        const reveal = document.querySelectorAll<HTMLElement>('.section-heading, .stat-card, .activity-panel, .graph-console, .bit-console, .learning-row, .latest-card, .project-tile, .blog-hero-grid, .article-card');
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: .08, rootMargin: '0px 0px -5% 0px' });
+        reveal.forEach((element, index) => {
+          element.classList.add('reveal-item');
+          element.style.setProperty('--reveal-delay', `${index % 4 * 65}ms`);
+          observer.observe(element);
         });
       }
       const command = document.querySelector<HTMLDialogElement>('.command-dialog');

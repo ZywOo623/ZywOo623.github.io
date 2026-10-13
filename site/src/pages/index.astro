@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import GraphLab from '../components/GraphLab.jsx';
-import SortRace from '../components/SortRace.jsx';
 import BitLab from '../components/BitLab.jsx';
 import codeforces from '../data/codeforces.json';
 
@@ -16,11 +15,12 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
   <section id="home" class="unveil-scene" aria-label="首页滚动揭幕">
     <div class="unveil-sticky">
       <div class="hero" aria-labelledby="hero-heading">
+    <canvas class="hero-constellation" aria-hidden="true"></canvas>
     <div class="hero-field" aria-hidden="true"><span>00101101</span><span>10110010</span><span>01010110</span><span>11001001</span></div>
     <div class="container hero-grid">
       <div class="hero-copy">
         <div class="eyebrow"><span class="live-dot"></span> PERSONAL SYSTEM / ONLINE</div>
-        <p class="hero-overline">C++ / ALGORITHMS / COMPETITIVE PROGRAMMING</p>
+        <p class="hero-overline" aria-label="C++ / ALGORITHMS / COMPETITIVE PROGRAMMING"><span aria-hidden="true" data-scramble="C++ / ALGORITHMS / COMPETITIVE PROGRAMMING">C++ / ALGORITHMS / COMPETITIVE PROGRAMMING</span></p>
         <h1 id="hero-heading">ZywOo623<span class="title-stop">.</span><br /><em>Code in motion.</em></h1>
         <p class="hero-lead">从一道题、一次推导开始。这里记录算法竞赛的练习、代码实验与愿意公开分享的学习笔记。</p>
         <div class="hero-actions">
@@ -90,15 +90,19 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
       <div class="section-kicker"><span>02 / INTERACTIVE</span><span>ALGORITHM PLAYGROUND</span></div>
       <div class="section-heading"><div><span class="kicker">RUN THE ALGORITHM</span><h2 id="graph-title">Don't just watch.<br /><em>Change the graph.</em></h2></div><p>选择起点与终点，关闭一条边，再逐步观察 Dijkstra 怎样更新距离。每一次操作都会重新计算最短路。</p></div>
       <GraphLab client:visible />
-      <a class="section-more" href="#sort">继续探索排序竞速 <span>↗</span></a>
     </div>
   </section>
 
-  <section id="sort" class="section sort-section" aria-labelledby="sort-title">
-    <div class="container">
-      <div class="section-kicker"><span>03 / SORT RACE</span><span>WATCH THE OPERATIONS / CHANGE THE INPUT</span></div>
-      <div class="section-heading"><div><span class="kicker">PARALLEL EXECUTION</span><h2 id="sort-title">See the logic.<br /><em>Feel the difference.</em></h2></div><p>排序过程不再是静态示意图。让两种算法处理同一组数字，自己控制节奏，观察每一步如何改变数组。</p></div>
-      <SortRace client:visible />
+  <section id="manifesto" class="manifesto-section" aria-label="创作与学习">
+    <div class="manifesto-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="container manifesto-inner">
+      <div class="manifesto-top"><span>03 / THE PROCESS</span><span>IDEAS → CODE → WORDS</span></div>
+      <div class="manifesto-lines" aria-label="Think. Build. Share.">
+        <span class="manifesto-line" aria-hidden="true">THINK<span>.</span></span>
+        <span class="manifesto-line" aria-hidden="true">BUILD<span>.</span></span>
+        <span class="manifesto-line" aria-hidden="true">SHARE<span>.</span></span>
+      </div>
+      <div class="manifesto-bottom"><p>从推导一道题，到写出代码，再把值得分享的思路整理成文章。这个网站会随着学习一起生长。</p><a class="action action-primary" href="/blog/">进入博客 <span aria-hidden="true">↗</span></a></div>
     </div>
   </section>
 
@@ -157,6 +161,24 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
     if (scene && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const number = scene.querySelector<HTMLElement>('.unveil-counter span');
       const skip = scene.querySelector<HTMLElement>('.unveil-skip');
+      const scramble = scene.querySelector<HTMLElement>('[data-scramble]');
+      let scrambled = false;
+      function revealCode() {
+        if (!scramble || scrambled) return;
+        scrambled = true;
+        const target = scramble.dataset.scramble ?? scramble.textContent ?? '';
+        const glyphs = '01<>/{}';
+        let frame = 0;
+        function drawLetters() {
+          if (!scramble) return;
+          frame++;
+          const stable = Math.floor(target.length * frame / 19);
+          scramble.textContent = [...target].map((letter, index) => index < stable || letter === ' ' ? letter : glyphs[(index * 3 + frame) % glyphs.length]).join('');
+          if (frame < 19) setTimeout(drawLetters, 35);
+          else scramble.textContent = target;
+        }
+        drawLetters();
+      }
       scene.classList.add('is-live');
       let pending = false;
       function updateScene() {
@@ -168,6 +190,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
         scene.style.setProperty('--right', `${103 * phase}%`);
         scene.style.setProperty('--seam-opacity', String(Math.max(0, 1 - phase * 2)));
         scene.classList.toggle('is-open', phase > .98);
+        if (phase > .82) revealCode();
         if (skip) skip.hidden = phase > .98;
         if (number) number.textContent = String(Math.round(phase * 100)).padStart(2, '0');
         pending = false;
@@ -175,6 +198,119 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
       addEventListener('scroll', () => { if (!pending) { pending = true; requestAnimationFrame(updateScene); } }, { passive: true });
       addEventListener('resize', updateScene);
       updateScene();
+    }
+
+    const manifesto = document.querySelector<HTMLElement>('.manifesto-section');
+    if (manifesto && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries[0]?.isIntersecting) manifesto.classList.add('is-visible');
+      }, { threshold: .18 });
+      observer.observe(manifesto);
+      let queued = false;
+      function moveManifesto() {
+        if (!manifesto) return;
+        const rect = manifesto.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < innerHeight) {
+          const progress = (innerHeight - rect.top) / (innerHeight + rect.height) - .5;
+          manifesto.querySelectorAll<HTMLElement>('.manifesto-line').forEach((line, index) => {
+            const direction = index === 1 ? -1 : 1;
+            line.style.setProperty('--manifesto-x', `${Math.round(progress * direction * 46)}px`);
+          });
+        }
+        queued = false;
+      }
+      addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(moveManifesto); } }, { passive: true });
+      addEventListener('resize', moveManifesto);
+      moveManifesto();
+    }
+
+    const hero = document.querySelector<HTMLElement>('.hero');
+    const canvas = hero?.querySelector<HTMLCanvasElement>('.hero-constellation');
+    if (hero && canvas && matchMedia('(pointer:fine) and (prefers-reduced-motion:no-preference)').matches) {
+      const context = canvas.getContext('2d');
+      if (context) {
+        let width = 0;
+        let height = 0;
+        let visible = false;
+        let animation = 0;
+        let previous = 0;
+        let pointer = { x: -1000, y: -1000 };
+        let nodes: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
+        function resizeCanvas() {
+          if (!hero || !canvas || !context) return;
+          width = hero.clientWidth;
+          height = hero.clientHeight;
+          const ratio = Math.min(devicePixelRatio || 1, 1.5);
+          canvas.width = Math.round(width * ratio);
+          canvas.height = Math.round(height * ratio);
+          context.setTransform(ratio, 0, 0, ratio, 0, 0);
+          nodes = Array.from({ length: Math.min(48, Math.max(28, Math.round(width / 27))) }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - .5) * .48,
+            vy: (Math.random() - .5) * .48,
+            r: Math.random() * 1.3 + .7,
+          }));
+        }
+        function drawNetwork(time: number) {
+          if (!visible || document.hidden || !context) { animation = 0; return; }
+          animation = requestAnimationFrame(drawNetwork);
+          if (time - previous < 32) return;
+          previous = time;
+          context.clearRect(0, 0, width, height);
+          nodes.forEach((node, index) => {
+            node.x = (node.x + node.vx + width) % width;
+            node.y = (node.y + node.vy + height) % height;
+            for (let other = index + 1; other < nodes.length; other++) {
+              const dx = node.x - nodes[other].x;
+              const dy = node.y - nodes[other].y;
+              const distance = Math.hypot(dx, dy);
+              if (distance >= 140) continue;
+              context.strokeStyle = `rgba(114,217,197,${(1 - distance / 140) * .19})`;
+              context.lineWidth = 1;
+              context.beginPath();
+              context.moveTo(node.x, node.y);
+              context.lineTo(nodes[other].x, nodes[other].y);
+              context.stroke();
+            }
+            const pointerDistance = Math.hypot(node.x - pointer.x, node.y - pointer.y);
+            if (pointerDistance < 170) {
+              context.strokeStyle = `rgba(198,245,120,${(1 - pointerDistance / 170) * .45})`;
+              context.beginPath();
+              context.moveTo(node.x, node.y);
+              context.lineTo(pointer.x, pointer.y);
+              context.stroke();
+            }
+            context.fillStyle = index % 7 === 0 ? 'rgba(198,245,120,.75)' : 'rgba(114,217,197,.5)';
+            context.beginPath();
+            context.arc(node.x, node.y, node.r, 0, Math.PI * 2);
+            context.fill();
+          });
+        }
+        resizeCanvas();
+        new IntersectionObserver(entries => {
+          visible = Boolean(entries[0]?.isIntersecting);
+          if (visible && !animation) animation = requestAnimationFrame(drawNetwork);
+          if (!visible && animation) { cancelAnimationFrame(animation); animation = 0; }
+        }, { threshold: .03 }).observe(hero);
+        hero.addEventListener('pointermove', event => {
+          const rect = hero.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          pointer = { x, y };
+          hero.style.setProperty('--hero-shift-x', `${((x / width) - .5) * 20}px`);
+          hero.style.setProperty('--hero-shift-y', `${((y / height) - .5) * 16}px`);
+        }, { passive: true });
+        hero.addEventListener('pointerleave', () => {
+          pointer = { x: -1000, y: -1000 };
+          hero.style.setProperty('--hero-shift-x', '0px');
+          hero.style.setProperty('--hero-shift-y', '0px');
+        });
+        addEventListener('resize', resizeCanvas);
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden && visible && !animation) animation = requestAnimationFrame(drawNetwork);
+        });
+      }
     }
   </script>
 </Base>
