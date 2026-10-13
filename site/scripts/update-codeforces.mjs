@@ -32,7 +32,7 @@ try {
     const key = `${problem.contestId ?? 'unknown'}-${problem.index ?? problem.name}`;
     if (accepted.has(key)) continue;
     accepted.add(key);
-    if (recentAccepted.length < 4) {
+    if (recentAccepted.length < 4 && problem.contestId && problem.index) {
       recentAccepted.push({
         name: problem.name,
         index: problem.index,
