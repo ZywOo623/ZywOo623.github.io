@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import GraphLab from '../components/GraphLab.jsx';
+import SortRace from '../components/SortRace.jsx';
 import BitLab from '../components/BitLab.jsx';
 import codeforces from '../data/codeforces.json';
 
@@ -26,7 +27,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
           <a class="action action-primary action-large" href="#arena">探索算法世界 <span aria-hidden="true">↘</span></a>
           <a class="action action-large" href="/blog/">阅读博客 <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="hero-index"><span>01 / 07</span><span class="hero-index-line"></span><span>SCROLL TO DECODE</span></div>
+        <div class="hero-index"><span>01 / 08</span><span class="hero-index-line"></span><span>SCROLL TO DECODE</span></div>
       </div>
       <div class="hero-machine" aria-hidden="true">
         <div class="machine-orbit machine-orbit-outer"></div><div class="machine-orbit machine-orbit-inner"></div>
@@ -89,12 +90,21 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
       <div class="section-kicker"><span>02 / INTERACTIVE</span><span>ALGORITHM PLAYGROUND</span></div>
       <div class="section-heading"><div><span class="kicker">RUN THE ALGORITHM</span><h2 id="graph-title">Don't just watch.<br /><em>Change the graph.</em></h2></div><p>选择起点与终点，关闭一条边，再逐步观察 Dijkstra 怎样更新距离。每一次操作都会重新计算最短路。</p></div>
       <GraphLab client:visible />
+      <a class="section-more" href="#sort">继续探索排序竞速 <span>↗</span></a>
+    </div>
+  </section>
+
+  <section id="sort" class="section sort-section" aria-labelledby="sort-title">
+    <div class="container">
+      <div class="section-kicker"><span>03 / SORT RACE</span><span>WATCH THE OPERATIONS / CHANGE THE INPUT</span></div>
+      <div class="section-heading"><div><span class="kicker">PARALLEL EXECUTION</span><h2 id="sort-title">See the logic.<br /><em>Feel the difference.</em></h2></div><p>排序过程不再是静态示意图。让两种算法处理同一组数字，自己控制节奏，观察每一步如何改变数组。</p></div>
+      <SortRace client:visible />
     </div>
   </section>
 
   <section id="lab" class="section bit-section" aria-labelledby="bit-title">
     <div class="container">
-      <div class="section-kicker"><span>03 / BIT LAB</span><span>01 00 11 01</span></div>
+      <div class="section-kicker"><span>04 / BIT LAB</span><span>01 00 11 01</span></div>
       <div class="section-heading"><div><span class="kicker">TOUCH THE BITS</span><h2 id="bit-title">Think in <em>bits.</em></h2></div><p>点亮或关闭一个二进制位，看看数值、popcount 与 lowbit 如何一起改变。</p></div>
       <BitLab client:visible />
     </div>
@@ -103,7 +113,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
   <section id="learning" class="section learning-section" aria-labelledby="learning-title">
     <div id="roadmap"></div>
     <div class="container">
-      <div class="section-kicker"><span>04 / LEARNING</span><span>FROM STUDY TO PUBLIC NOTES</span></div>
+      <div class="section-kicker"><span>05 / LEARNING</span><span>FROM STUDY TO PUBLIC NOTES</span></div>
       <div class="section-heading"><div><span class="kicker">ALGORITHM GUIDE</span><h2 id="learning-title">A growing<br /><em>knowledge map.</em></h2></div><p>Learning 记录我在学什么；Blog 收录已经整理、愿意公开分享的内容。状态只表示文章是否发布。</p></div>
       <div class="learning-list">
         {guide.map((post, index) => <a href={`/blog/${slug(post)}/`} class="learning-row"><span class="learning-index">{String(index + 1).padStart(2, '0')}</span><strong>{post.id.split('/').at(-1)?.startsWith('0x01') ? '0x01 位运算' : '0x02 递推与递归'}</strong><span class="learning-status"><i></i> 已发布</span><span class="learning-arrow">查看笔记 ↗</span></a>)}
@@ -115,7 +125,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
 
   <section id="blog-preview" class="section latest-section" aria-labelledby="latest-title">
     <div class="container">
-      <div class="section-kicker"><span>05 / WRITING</span><span>WORDS, CODE AND IDEAS</span></div>
+      <div class="section-kicker"><span>06 / WRITING</span><span>WORDS, CODE AND IDEAS</span></div>
       <div class="section-heading"><div><span class="kicker">FROM THE NOTEBOOK</span><h2 id="latest-title">Ideas worth<br /><em>writing down.</em></h2></div><p>算法学习笔记、做题时的易错点，以及从思路走到代码的过程。</p></div>
       <div class="latest-grid">
         {latest.map((post, index) => <a class="latest-card" href={`/blog/${slug(post)}/`}><span class="latest-card-top"><span>{String(index + 1).padStart(2, '0')} / JOURNAL</span><span>↗</span></span><span class="latest-card-category">{post.data.category}</span><h3>{post.data.title}</h3><p>{post.data.description}</p><span class="latest-card-bottom">{post.data.date.toISOString().slice(0, 10)} <b>阅读全文 →</b></span></a>)}
@@ -126,7 +136,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
 
   <section id="projects" class="section projects-section" aria-labelledby="projects-title">
     <div class="container">
-      <div class="section-kicker"><span>06 / PROJECTS</span><span>LEARNING BY BUILDING</span></div>
+      <div class="section-kicker"><span>07 / PROJECTS</span><span>LEARNING BY BUILDING</span></div>
       <div class="section-heading"><div><span class="kicker">SELECTED WORK</span><h2 id="projects-title">Built to<br /><em>learn better.</em></h2></div><p>从练习记录工具到互动算法实验，项目跟着学习一起生长。</p></div>
       <div class="project-grid">
         <a href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer" class="project-tile"><span>01 / CODEFORCES</span><h3>Algorithm Tracker</h3><p>Codeforces 刷题记录与分析工具。</p><b>打开项目 ↗</b></a>
@@ -137,7 +147,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
 
   <section id="about" class="section about-section" aria-labelledby="about-title">
     <div class="container about-grid">
-      <div><div class="section-kicker"><span>07 / ABOUT</span></div><span class="kicker">HELLO, I'M ZYWOO623</span><h2 id="about-title">One problem<br /><em>at a time.</em></h2></div>
+      <div><div class="section-kicker"><span>08 / ABOUT</span></div><span class="kicker">HELLO, I'M ZYWOO623</span><h2 id="about-title">One problem<br /><em>at a time.</em></h2></div>
       <div class="about-copy"><p>我正在学习 C++、数据结构和算法竞赛。这个网站是练习与思考的公开记录，也是尝试把代码做得更有趣的地方。</p><p>博客文章会从私人笔记中整理发布，保留值得分享的推导、代码和易错点。</p><div><a class="action action-primary" href="https://github.com/ZywOo623" target="_blank" rel="noopener noreferrer">GITHUB ↗</a><a class="action" href="/blog/">READ THE BLOG ↗</a></div></div>
     </div>
   </section>

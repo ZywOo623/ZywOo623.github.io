@@ -33,7 +33,8 @@ const second = await readFile(join(dist, 'blog/0x02-recursion/index.html'), 'utf
 if (snapshot.status === 'ok' && !index.includes(`PROBLEMS SOLVED</span><strong>${snapshot.solved}`)) errors.push('Codeforces snapshot is not displayed');
 if (snapshot.status !== 'ok' && !index.includes('数据暂时无法同步')) errors.push('Codeforces fallback is not displayed');
 if (!index.includes('/blog/0x01-bit-operation/')) errors.push('Learning to Blog link is missing');
-if (archive.indexOf('0x01-bit-operation') >= archive.indexOf('0x02-recursion')) errors.push('Guide series is not ordered 0x01 then 0x02');
+const articleGrid = archive.slice(archive.indexOf('class="article-grid"'));
+if (!archive.includes('class="article-grid"') || articleGrid.indexOf('0x01-bit-operation') >= articleGrid.indexOf('0x02-recursion')) errors.push('Guide series is not ordered 0x01 then 0x02');
 if (!first.includes('class="katex') || !first.includes('<pre') || !first.includes('data-language="cpp"')) errors.push('0x01 article lost math or C++ formatting');
 if (!second.includes('CF550B') || !second.includes('data-language="cpp"')) errors.push('0x02 article content or C++ formatting is missing');
 if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
