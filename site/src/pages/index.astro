@@ -12,7 +12,9 @@ const slug = (post) => post.id.split('/').at(-1);
 const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 10) : null;
 ---
 <Base title="ZywOo623 · 算法控制台" description="ZywOo623 的个人主页：算法竞赛记录、交互实验和公开技术博客。" active="home">
-  <section class="hero" id="home" aria-labelledby="hero-heading">
+  <section id="home" class="unveil-scene" aria-label="首页滚动揭幕">
+    <div class="unveil-sticky">
+      <div class="hero" aria-labelledby="hero-heading">
     <div class="hero-field" aria-hidden="true"><span>00101101</span><span>10110010</span><span>01010110</span><span>11001001</span></div>
     <div class="container hero-grid">
       <div class="hero-copy">
@@ -21,7 +23,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
         <h1 id="hero-heading">ZywOo623<span class="title-stop">.</span><br /><em>Code in motion.</em></h1>
         <p class="hero-lead">从一道题、一次推导开始。这里记录算法竞赛的练习、代码实验与愿意公开分享的学习笔记。</p>
         <div class="hero-actions">
-          <a class="action action-primary action-large" href="#unveil">进入算法世界 <span aria-hidden="true">↘</span></a>
+          <a class="action action-primary action-large" href="#arena">探索算法世界 <span aria-hidden="true">↘</span></a>
           <a class="action action-large" href="/blog/">阅读博客 <span aria-hidden="true">↗</span></a>
         </div>
         <div class="hero-index"><span>01 / 07</span><span class="hero-index-line"></span><span>SCROLL TO DECODE</span></div>
@@ -38,34 +40,15 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
         <span class="machine-float machine-float-b">O(log n)</span>
       </div>
     </div>
-    <div class="hero-bottom"><span>BUILD / LEARN / WRITE</span><span>↙ KEEP SCROLLING</span></div>
-  </section>
-
-  <section id="unveil" class="unveil-scene" aria-label="滚动揭幕场景">
-    <div class="unveil-sticky">
-      <div class="unveil-under" aria-hidden="true">
-        <div class="unveil-grid"></div>
-        <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-          <g fill="none" stroke="#72d9c5" stroke-width="1.5">
-            <path pathLength="1" d="M50 440 L220 320 L380 430 L570 180 L790 300 L950 105" />
-            <path pathLength="1" d="M220 320 L320 100 L570 180 L720 65" />
-            <path pathLength="1" d="M380 430 L640 510 L790 300 L960 460" />
-          </g>
-          <g fill="#c6f578"><circle cx="50" cy="440" r="5" /><circle cx="220" cy="320" r="7" /><circle cx="380" cy="430" r="5" /><circle cx="570" cy="180" r="8" /><circle cx="790" cy="300" r="6" /><circle cx="950" cy="105" r="5" /><circle cx="320" cy="100" r="5" /><circle cx="720" cy="65" r="5" /><circle cx="640" cy="510" r="5" /><circle cx="960" cy="460" r="5" /></g>
-        </svg>
-      </div>
-      <div class="unveil-message">
-        <span class="kicker">ZYWOO623 / SYSTEM REVEALED</span>
-        <h2>From bits<br />to <em>ideas.</em></h2>
-        <p>一段代码，可以是一道题的答案，也可以是一段长期学习的起点。</p>
-        <div>EXPLORE <i></i> LEARN <i></i> SHARE</div>
+        <div class="hero-bottom"><span>BUILD / LEARN / WRITE</span><span>↙ KEEP SCROLLING</span></div>
       </div>
       <div class="unveil-curtains" aria-hidden="true">
-        <div class="unveil-curtain unveil-curtain-left"><span>10110100 01010110 11001001 00101101 10110010<br />01011010 11010110 00101011 10100101 01001101<br />11010010 00110110 10110010 01011001 11001010<br />00101101 10100110 01010101 11010011 00110101<br />10101010 01001010 10100101 00110101 10110100</span></div>
-        <div class="unveil-curtain unveil-curtain-right"><span>00110110 11001001 01010101 10101001 01100101<br />11010010 01011010 10110100 00101101 11001010<br />00110101 10100110 01010101 11010010 00101101<br />10110010 01010110 11001001 00101101 10100110<br />01010101 11010011 00110101 10101010 01001010</span></div>
+        <div class="unveil-curtain unveil-curtain-left"><div class="curtain-content"><span>01 / SYSTEM INITIALIZING</span><strong>ZYWOO</strong><small>10110100 01010110 11001001 00101101</small></div></div>
+        <div class="unveil-curtain unveil-curtain-right"><div class="curtain-content"><span>COMPETITIVE PROGRAMMING / C++</span><strong>623<span>_</span></strong><small>00110110 11001001 01010101 10101001</small></div></div>
         <div class="unveil-seam"><span>SCROLL TO REVEAL</span></div>
       </div>
       <div class="unveil-counter" aria-hidden="true">UNVEIL <span>00</span>%</div>
+      <a class="unveil-skip" href="#arena">跳过揭幕 ↘</a>
     </div>
   </section>
 
@@ -163,16 +146,19 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
     const scene = document.querySelector<HTMLElement>('.unveil-scene');
     if (scene && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const number = scene.querySelector<HTMLElement>('.unveil-counter span');
+      const skip = scene.querySelector<HTMLElement>('.unveil-skip');
       scene.classList.add('is-live');
       let pending = false;
       function updateScene() {
         if (!scene) return;
-        const distance = Math.max(1, scene.offsetHeight - innerHeight);
+        // Open during the first screen of scrolling, then leave time to read the revealed hero.
+        const distance = Math.max(1, Math.min(scene.offsetHeight - innerHeight, innerHeight * .8));
         const phase = Math.min(1, Math.max(0, -scene.getBoundingClientRect().top / distance));
         scene.style.setProperty('--left', `${-103 * phase}%`);
         scene.style.setProperty('--right', `${103 * phase}%`);
         scene.style.setProperty('--seam-opacity', String(Math.max(0, 1 - phase * 2)));
-        scene.style.setProperty('--trace', String(1 - phase));
+        scene.classList.toggle('is-open', phase > .98);
+        if (skip) skip.hidden = phase > .98;
         if (number) number.textContent = String(Math.round(phase * 100)).padStart(2, '0');
         pending = false;
       }
