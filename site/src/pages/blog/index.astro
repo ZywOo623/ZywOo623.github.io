@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const categories = ['算法竞赛进阶指南', 'Codeforces 题解', '算法专题', '学习总结'];
+const posts = await getCollection('blog');
+const ordered = [...posts].sort((a, b) => {
+  if (a.data.category === '算法竞赛进阶指南' && b.data.category === '算法竞赛进阶指南') return a.id.localeCompare(b.id);
+  return b.data.date.getTime() - a.data.date.getTime();
+});
+const slug = (post) => post.id.split('/').at(-1);
+---
+<Base title="Blog · ZywOo623" description="ZywOo623 的算法竞赛学习笔记、题解与思考。" active="blog">
+  <section class="blog-hero">
+    <div class="container blog-hero-grid">
+      <div><span class="kicker">PUBLIC NOTEBOOK / ZYWOO623</span><h1>Thoughts<br />in <em>code.</em></h1><p>记录算法竞赛学习、题解与思考。把复杂的过程，整理成可以回头阅读的文字。</p></div>
+      <div class="blog-hero-stamp" aria-hidden="true"><span>01010100</span><strong>{String(posts.length).padStart(2, '0')}</strong><small>PUBLIC ENTRIES</small><span>00101101</span></div>
+    </div>
+    <div class="blog-hero-bottom container"><span>ALGORITHM GUIDE / CODEFORCES / LEARNING</span><span>↘ EXPLORE THE ARCHIVE</span></div>
+  </section>
+
+  <section class="section blog-archive" aria-labelledby="archive-title">
+    <div class="container">
+      <div class="section-kicker"><span>01 / ARCHIVE</span><span>ORDERED BY SERIES</span></div>
+      <div class="section-heading"><div><span class="kicker">THE LIBRARY</span><h2 id="archive-title">Every note<br /><em>has a story.</em></h2></div><p>《算法竞赛进阶指南》系列按章节从 0x01 开始排列，其他文章按发布时间排列。</p></div>
+      <div class="category-filters" role="group" aria-label="筛选文章分类">
+        <button type="button" data-category="全部" aria-pressed="true">全部 <span>{posts.length}</span></button>
+        {categories.map(category => <button type="button" data-category={category} aria-pressed="false">{category} <span>{posts.filter(post => post.data.category === category).length}</span></button>)}
+      </div>
+      <p id="archive-count" class="archive-count">{posts.length} 篇公开文章</p>
+      <div class="article-grid">
+        {ordered.map((post, index) => <article class="article-card" data-category={post.data.category}>
+          <a href={`/blog/${slug(post)}/`} aria-label={`阅读 ${post.data.title}`}>
+            <div class="article-card-top"><span>{String(index + 1).padStart(2, '0')} / JOURNAL</span><span>↗</span></div>
+            <span class="article-card-category">{post.data.category}</span>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.description}</p>
+            <div class="article-card-tags">{post.data.tags.map(tag => <span>#{tag}</span>)}</div>
+            <div class="article-card-bottom"><time datetime={post.data.date.toISOString().slice(0, 10)}>{post.data.date.toISOString().slice(0, 10)}</time><span>阅读全文 →</span></div>
+          </a>
+        </article>)}
+      </div>
+      <div id="archive-empty" class="archive-empty" hidden>这个分类暂时没有公开文章。</div>
+    </div>
+  </section>
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.category-filters button');
+    const cards = document.querySelectorAll<HTMLElement>('.article-card');
+    const count = document.querySelector<HTMLElement>('#archive-count');
+    const empty = document.querySelector<HTMLElement>('#archive-empty');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const category = button.dataset.category;
+      let visible = 0;
+      buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      cards.forEach(card => {
+        const show = category === '全部' || card.dataset.category === category;
+        card.hidden = !show;
+        if (show) visible++;
+      });
+      if (count) count.textContent = `${visible} 篇公开文章`;
+      if (empty) empty.hidden = visible !== 0;
+    }));
+  </script>
+</Base>

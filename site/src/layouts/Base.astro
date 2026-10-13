@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  active?: 'home' | 'blog';
+}
+
+const { title, description, active } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#081217" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.css" />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <nav class="site-nav container" aria-label="主导航">
+        <a class="brand" href="/" aria-label="ZywOo623 首页"><span class="brand-mark">Z<span>_</span></span><span class="brand-name">ZYWOO623<small>ALGORITHM SYSTEM</small></span></a>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="打开导航"><span></span><span></span><span></span></button>
+        <div id="nav-links" class="nav-links">
+          <a href="/" aria-current={active === 'home' ? 'page' : undefined}>HOME</a>
+          <a href="/#arena">PROBLEMS</a>
+          <a href="/#graph">GRAPH LAB</a>
+          <a href="/#learning">LEARNING</a>
+          <a href="/blog/" aria-current={active === 'blog' ? 'page' : undefined}>BLOG</a>
+          <a href="/#about">ABOUT</a>
+        </div>
+        <a class="nav-signal" href="https://codeforces.com/profile/ZywOo623" target="_blank" rel="noopener noreferrer"><span class="live-dot"></span> CF PROFILE ↗</a>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div><a class="footer-brand" href="/">ZYWOO623<span>_</span></a><p>Learning in public. One problem at a time.</p></div>
+        <div class="footer-links"><a href="/#learning">Learning</a><a href="/blog/">Blog</a><a href="https://github.com/ZywOo623" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://codeforces.com/profile/ZywOo623" target="_blank" rel="noopener noreferrer">Codeforces ↗</a></div>
+        <div class="footer-end">© {new Date().getFullYear()} ZywOo623<br /><span>BUILT WITH CURIOSITY / 编写中</span></div>
+      </div>
+    </footer>
+    <script>
+      const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const links = document.querySelector<HTMLElement>('.nav-links');
+      function closeMenu() {
+        menu?.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
+      }
+      menu?.addEventListener('click', () => {
+        const open = menu.getAttribute('aria-expanded') !== 'true';
+        menu.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('menu-open', open);
+      });
+      links?.addEventListener('click', event => {
+        if ((event.target as HTMLElement).closest('a')) closeMenu();
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeMenu();
+      });
+      const fill = document.querySelector<HTMLElement>('.reading-progress span');
+      let scheduled = false;
+      function updateProgress() {
+        const length = document.documentElement.scrollHeight - window.innerHeight;
+        if (fill) fill.style.width = `${length > 0 ? Math.min(100, window.scrollY / length * 100) : 0}%`;
+        scheduled = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!scheduled) { scheduled = true; requestAnimationFrame(updateProgress); }
+      }, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+      if (matchMedia('(pointer:fine) and (prefers-reduced-motion:no-preference)').matches) {
+        document.querySelectorAll<HTMLElement>('.latest-card, .article-card > a').forEach(card => {
+          card.addEventListener('pointermove', event => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+          }, { passive: true });
+        });
+      }
+    </script>
+  </body>
+</html>

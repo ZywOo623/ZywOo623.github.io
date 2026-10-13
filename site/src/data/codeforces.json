@@ -1,0 +1,42 @@
+{
+  "status": "ok",
+  "handle": "ZywOo623",
+  "fetchedAt": "2026-10-13T04:59:31.446Z",
+  "rating": null,
+  "maxRating": null,
+  "rank": null,
+  "solved": 55,
+  "submissions": 82,
+  "submissionsTruncated": false,
+  "contests": 0,
+  "recentAccepted": [
+    {
+      "name": "Preparing Olympiad",
+      "index": "B",
+      "contestId": 550,
+      "rating": 1400,
+      "date": "2026-10-11"
+    },
+    {
+      "name": "Cut Ribbon",
+      "index": "A",
+      "contestId": 189,
+      "rating": 1300,
+      "date": "2026-10-10"
+    },
+    {
+      "name": "Petr and a Combination Lock",
+      "index": "B",
+      "contestId": 1097,
+      "rating": 1200,
+      "date": "2026-10-10"
+    },
+    {
+      "name": "Party",
+      "index": "A",
+      "contestId": 115,
+      "rating": 900,
+      "date": "2026-10-10"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id.split('/').at(-1) },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const allPosts = await getCollection('blog');
+const guide = allPosts.filter(item => item.data.category === post.data.category).sort((a, b) => a.id.localeCompare(b.id));
+const index = guide.findIndex(item => item.id === post.id);
+const previous = guide[index - 1];
+const next = guide[index + 1];
+const slug = (entry) => entry.id.split('/').at(-1);
+---
+<Base title={`${post.data.title} · ZywOo623`} description={post.data.description} active="blog">
+  <div class="article-page container">
+    <a class="back-link" href="/blog/">← 返回 Blog</a>
+    <div class="article-layout">
+      <div class="article-main">
+        <header class="article-header">
+          <div class="article-eyebrow"><span>{post.data.category}</span><span> / </span><span>{post.data.series}</span></div>
+          <h1>{post.data.title}</h1>
+          <p class="article-intro">{post.data.description}</p>
+          <div class="article-meta"><time datetime={post.data.date.toISOString().slice(0, 10)}>{post.data.date.toISOString().slice(0, 10)}</time><span>{post.data.tags.map(tag => `#${tag}`).join('  ')}</span></div>
+        </header>
+        <article class="prose" aria-label="文章正文"><Content /></article>
+        <nav class="article-neighbors" aria-label="系列文章导航">
+          {previous ? <a href={`/blog/${slug(previous)}/`}><span>← 上一篇</span><strong>{previous.data.title}</strong></a> : <span></span>}
+          {next ? <a href={`/blog/${slug(next)}/`}><span>下一篇 →</span><strong>{next.data.title}</strong></a> : <span></span>}
+        </nav>
+        <a class="back-link article-back" href="/blog/">← 返回文章列表</a>
+      </div>
+      <aside class="article-aside" aria-label="文章目录">
+        <div class="aside-top"><span>ON THIS PAGE</span><b id="article-percent">00%</b></div>
+        {headings.length ? <nav class="article-toc">{headings.filter(heading => heading.depth <= 3).map(heading => <a href={`#${heading.slug}`} data-depth={heading.depth}>{heading.text}</a>)}</nav> : <p>这篇文章暂无章节标题。</p>}
+        <div class="aside-progress"><span></span></div>
+        <a href="/blog/">BLOG ARCHIVE ↗</a>
+      </aside>
+    </div>
+  </div>
+  <button class="back-top" type="button" aria-label="返回顶部">↑</button>
+  <script>
+    const body = document.querySelector<HTMLElement>('.prose');
+    body?.querySelectorAll<HTMLElement>('pre').forEach(pre => {
+      const code = pre.querySelector('code');
+      if (!code) return;
+      const frame = document.createElement('div');
+      frame.className = 'code-frame';
+      pre.replaceWith(frame);
+      frame.append(pre);
+      const bar = document.createElement('div');
+      bar.className = 'code-bar';
+      const label = document.createElement('span');
+      label.textContent = pre.dataset.language ?? code.className.match(/language-([\w+#-]+)/)?.[1] ?? 'CODE';
+      const copy = document.createElement('button');
+      copy.type = 'button';
+      copy.textContent = '复制代码';
+      copy.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(code.textContent ?? ''); copy.textContent = '已复制 ✓'; }
+        catch { copy.textContent = '复制失败'; }
+        setTimeout(() => { copy.textContent = '复制代码'; }, 1500);
+      });
+      bar.append(label, copy);
+      frame.prepend(bar);
+    });
+    body?.querySelectorAll<HTMLTableElement>('table').forEach(table => {
+      const wrap = document.createElement('div');
+      wrap.className = 'table-scroll';
+      table.replaceWith(wrap);
+      wrap.append(table);
+    });
+    const article = document.querySelector<HTMLElement>('.article-main');
+    const percent = document.querySelector<HTMLElement>('#article-percent');
+    const bar = document.querySelector<HTMLElement>('.aside-progress span');
+    const top = document.querySelector<HTMLButtonElement>('.back-top');
+    const headings = [...document.querySelectorAll<HTMLElement>('.prose h2, .prose h3')];
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('.article-toc a')];
+    function updateArticle() {
+      if (!article) return;
+      const start = window.scrollY + article.getBoundingClientRect().top;
+      const end = start + article.offsetHeight - window.innerHeight * .55;
+      const ratio = Math.min(1, Math.max(0, (window.scrollY - start + window.innerHeight * .2) / Math.max(1, end - start)));
+      const progress = Math.round(ratio * 100);
+      if (percent) percent.textContent = `${progress}%`;
+      if (bar) bar.style.width = `${progress}%`;
+      top?.classList.toggle('is-visible', window.scrollY > 650);
+      let current = 0;
+      headings.forEach((heading, index) => { if (heading.getBoundingClientRect().top < 180) current = index; });
+      links.forEach((link, index) => link.toggleAttribute('aria-current', index === current));
+    }
+    addEventListener('scroll', updateArticle, { passive: true });
+    addEventListener('resize', updateArticle);
+    top?.addEventListener('click', () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+    updateArticle();
+  </script>
+</Base>

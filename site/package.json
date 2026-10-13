@@ -1,0 +1,25 @@
+{
+  "name": "zywoo623-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check:output": "node scripts/check-output.mjs",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs",
+    "update:data": "node scripts/update-codeforces.mjs",
+    "export:root": "node scripts/export-root.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.2",
+    "@astrojs/react": "^7.0.1",
+    "animejs": "^4.5.0",
+    "astro": "^7.3.8",
+    "katex": "^0.19.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
+  }
+}

@@ -1,0 +1,5 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>正在前往文章 · ZywOo623</title><script>
+  const available = new Set(['0x01-bit-operation', '0x02-recursion']);
+  const post = new URLSearchParams(location.search).get('post');
+  location.replace(available.has(post) ? `/blog/${post}/` : '/blog/');
+</script></head><body><p>文章地址已更新。<a href="/blog/">返回 Blog</a></p></body></html>
