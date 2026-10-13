@@ -30,7 +30,8 @@ const snapshot = JSON.parse(await readFile(new URL('../src/data/codeforces.json'
 const archive = await readFile(join(dist, 'blog/index.html'), 'utf8');
 const first = await readFile(join(dist, 'blog/0x01-bit-operation/index.html'), 'utf8');
 const second = await readFile(join(dist, 'blog/0x02-recursion/index.html'), 'utf8');
-if (snapshot.status === 'ok' && !index.includes(`PROBLEMS SOLVED</span><strong>${snapshot.solved}`)) errors.push('Codeforces snapshot is not displayed');
+const solvedCard = index.slice(index.indexOf('PROBLEMS SOLVED'), index.indexOf('PROBLEMS SOLVED') + 400);
+if (snapshot.status === 'ok' && !solvedCard.includes(`data-count="${snapshot.solved}"`)) errors.push('Codeforces snapshot is not displayed');
 if (snapshot.status !== 'ok' && !index.includes('数据暂时无法同步')) errors.push('Codeforces fallback is not displayed');
 if (!index.includes('/blog/0x01-bit-operation/')) errors.push('Learning to Blog link is missing');
 const articleGrid = archive.slice(archive.indexOf('class="article-grid"'));

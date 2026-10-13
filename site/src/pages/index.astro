@@ -11,7 +11,7 @@ const guide = [...posts].filter(post => post.data.category === '算法竞赛进�
 const slug = (post) => post.id.split('/').at(-1);
 const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 10) : null;
 ---
-<Base title="ZywOo623 · 算法控制台" description="ZywOo623 的个人主页：算法竞赛记录、交互实验和公开技术博客。" active="home">
+<Base title="ZywOo623 · 个人主页与博客" description="ZywOo623 的个人主页与技术博客：公开算法学习文章、项目作品和 Codeforces 练习概览。" active="home">
   <section id="home" class="unveil-scene" aria-label="首页滚动揭幕">
     <div class="unveil-sticky">
       <div class="hero" aria-labelledby="hero-heading">
@@ -58,17 +58,17 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
   <section id="arena" class="section arena-section" aria-labelledby="arena-title">
     <div class="container">
       <div class="section-kicker"><span>01 / SIGNALS</span><span>VERIFIED DATA, NO PLACEHOLDERS</span></div>
-      <div class="section-heading"><div><span class="kicker">CODEFORCES / PRACTICE LOG</span><h2 id="arena-title">The work behind<br /><em>the numbers.</em></h2></div><p>竞赛数据来自公开的 Codeforces 账号。这里展示真实的练习记录；同步失败时会标明数据状态。</p></div>
+      <div class="section-heading"><div><span class="kicker">CODEFORCES / PUBLIC SNAPSHOT</span><h2 id="arena-title">The work behind<br /><em>the numbers.</em></h2></div><p>这里展示公开的练习概览。完整题库、错题复习与训练分析放在独立的 Algorithm Tracker 中。</p></div>
       {codeforces.status === 'ok' ? (
         <>
           <div class="stat-grid">
-            <div class="stat-card stat-primary"><span>PROBLEMS SOLVED</span><strong>{codeforces.solved}<small> AC</small></strong><p>{codeforces.submissionsTruncated ? '最近 10000 次提交中的不同题目' : '不同题目的通过记录'}</p><i>↗</i></div>
-            <div class="stat-card"><span>SUBMISSIONS</span><strong>{codeforces.submissions}</strong><p>公开提交记录</p></div>
+            <div class="stat-card stat-primary"><span>PROBLEMS SOLVED</span><strong aria-label={`${codeforces.solved} AC`}><span aria-hidden="true" data-count={codeforces.solved}>{codeforces.solved}</span><small aria-hidden="true"> AC</small></strong><p>{codeforces.submissionsTruncated ? '最近 10000 次提交中的不同题目' : '不同题目的通过记录'}</p><i>↗</i></div>
+            <div class="stat-card"><span>SUBMISSIONS</span><strong aria-label={`${codeforces.submissions} 次提交`}><span aria-hidden="true" data-count={codeforces.submissions}>{codeforces.submissions}</span></strong><p>公开提交记录</p></div>
             <div class="stat-card"><span>RATING</span><strong>{codeforces.rating ?? '—'}</strong><p>{codeforces.rating === null ? '暂无评级记录' : codeforces.rank ?? 'Codeforces rating'}</p></div>
-            <div class="stat-card"><span>RATED CONTESTS</span><strong>{codeforces.contests}</strong><p>公开评级历史</p></div>
+            <div class="stat-card"><span>RATED CONTESTS</span><strong aria-label={`${codeforces.contests} 场评级比赛`}><span aria-hidden="true" data-count={codeforces.contests}>{codeforces.contests}</span></strong><p>公开评级历史</p></div>
           </div>
           <div class="activity-panel">
-            <div class="activity-head"><div><span class="kicker">RECENT ACCEPTED</span><h3>最近通过的题目</h3></div><a class="text-link" href="https://codeforces.com/profile/ZywOo623" target="_blank" rel="noopener noreferrer">查看 Codeforces ↗</a></div>
+            <div class="activity-head"><div><span class="kicker">RECENT ACCEPTED</span><h3>最近通过的题目</h3></div><a class="text-link" href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer">打开完整训练记录 ↗</a></div>
             <div class="activity-list">
               {codeforces.recentAccepted.map((problem, index) => (
                 <a href={`https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`} target="_blank" rel="noopener noreferrer">
@@ -80,7 +80,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
           <p class="data-note">来源：Codeforces 公开 API · 快照日期 {snapshotDate} · <a href="https://codeforces.com/profile/ZywOo623" target="_blank" rel="noopener noreferrer">打开原始个人页 ↗</a></p>
         </>
       ) : (
-        <div class="data-unavailable"><strong>数据暂时无法同步</strong><p>你仍可以前往 Codeforces 查看公开练习记录。</p><a class="action action-primary" href="https://codeforces.com/profile/ZywOo623" target="_blank" rel="noopener noreferrer">打开 Codeforces ↗</a></div>
+        <div class="data-unavailable"><strong>数据暂时无法同步</strong><p>你仍可以前往 Codeforces 查看公开练习记录，或打开 Algorithm Tracker 管理个人训练。</p><a class="action action-primary" href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer">打开 Algorithm Tracker ↗</a></div>
       )}
     </div>
   </section>
@@ -141,9 +141,12 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
   <section id="projects" class="section projects-section" aria-labelledby="projects-title">
     <div class="container">
       <div class="section-kicker"><span>07 / PROJECTS</span><span>LEARNING BY BUILDING</span></div>
-      <div class="section-heading"><div><span class="kicker">SELECTED WORK</span><h2 id="projects-title">Built to<br /><em>learn better.</em></h2></div><p>从练习记录工具到互动算法实验，项目跟着学习一起生长。</p></div>
+      <div class="section-heading"><div><span class="kicker">SELECTED WORK</span><h2 id="projects-title">Built to<br /><em>learn better.</em></h2></div><p>Algorithm Tracker 承载完整训练记录；这里展示项目入口与公开的创作过程。</p></div>
       <div class="project-grid">
-        <a href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer" class="project-tile"><span>01 / CODEFORCES</span><h3>Algorithm Tracker</h3><p>Codeforces 刷题记录与分析工具。</p><b>打开项目 ↗</b></a>
+        <a href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer" class="project-tile project-tile-featured">
+          <div class="project-copy"><span>01 / FEATURED PROJECT · CODEFORCES</span><h3>Algorithm<br />Tracker<span class="project-title-stop">.</span></h3><p>刷题记录、错题复习和训练分析，集中在一个独立工具中。</p><b>打开完整项目 ↗</b></div>
+          <div class="tracker-art" aria-hidden="true"><div class="tracker-art-head"><span>ZY / TRACKER</span><span>● ONLINE</span></div><div class="tracker-flow"><span>PROBLEMS</span><i>↘</i><span>REVIEW</span><i>↘</i><span>INSIGHTS</span></div><div class="tracker-art-foot"><span>CF DATA</span><span>TRAINING SYSTEM</span></div></div>
+        </a>
         <a href="#graph" class="project-tile"><span>02 / INTERACTIVE</span><h3>Graph Lab</h3><p>动手改变图，观察最短路算法运行。</p><b>开始探索 ↗</b></a>
       </div>
     </div>

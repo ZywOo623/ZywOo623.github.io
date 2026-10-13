@@ -124,3 +124,39 @@ body::before{background-image:radial-gradient(460px circle at var(--cursor-x,75%
 @media(max-width:900px){.manifesto-section{min-height:75svh}.manifesto-lines{font-size:clamp(78px,14vw,132px)}.manifesto-orbit{right:-18%;width:70vw}}
 @media(max-width:650px){.site-header.is-floating{top:8px;left:8px;right:8px;border-radius:10px}.site-header.is-floating .site-nav{height:56px}.manifesto-section{min-height:70svh;padding:80px 0}.manifesto-top{font-size:8px}.manifesto-top span:last-child{max-width:47%;text-align:right}.manifesto-lines{margin:8vh 0 7vh;font-size:clamp(68px,16vw,100px);gap:10px}.manifesto-bottom{display:block}.manifesto-bottom p{font-size:14px}.manifesto-bottom .action{margin-top:23px}.manifesto-orbit{right:-35%;width:100vw}.hero-constellation{display:none}}
 @media(prefers-reduced-motion:reduce){.hero h1 em{animation:none}.manifesto-orbit i:nth-child(2){animation:none}.manifesto-line{opacity:1;transform:none}.reveal-item{opacity:1;filter:none;translate:none}}
+
+/* A compact chapter index keeps the long homepage navigable on desktop. */
+.section-rail{position:fixed;z-index:58;top:50%;right:13px;display:flex;flex-direction:column;align-items:flex-end;gap:3px;transform:translateY(-50%)}
+.section-rail::before{content:'';position:absolute;right:2px;top:9px;bottom:9px;width:1px;background:var(--line)}
+.section-rail a{position:relative;display:flex;align-items:center;justify-content:flex-end;gap:7px;width:42px;height:39px;color:var(--muted);font:9px var(--mono);transition:color .2s}
+.section-rail a::after{content:'';width:5px;height:5px;flex:none;border-radius:50%;background:#688579;box-shadow:0 0 0 4px var(--bg);transition:background .2s,box-shadow .2s,transform .2s}
+.section-rail a:hover,.section-rail a[aria-current]{color:var(--lime)}
+.section-rail a:hover::after,.section-rail a[aria-current]::after{background:var(--lime);box-shadow:0 0 0 4px var(--bg),0 0 17px var(--lime);transform:scale(1.45)}
+.section-rail a b{position:absolute;right:48px;top:50%;width:max-content;padding:8px 11px;transform:translate(5px,-50%);border:1px solid var(--line);border-radius:5px;background:#102127;color:var(--lime);font:9px var(--mono);letter-spacing:.1em;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.section-rail a:hover b,.section-rail a:focus-visible b{opacity:1;transform:translate(0,-50%)}
+
+/* Featured work is a live project link; its graphic describes the workflow, not invented statistics. */
+.project-grid{grid-template-columns:minmax(0,1.5fr) minmax(0,.85fr)}
+.project-tile{min-height:355px}
+.project-tile-featured{display:grid;grid-template-columns:minmax(0,1fr) minmax(185px,.85fr);align-items:center;gap:26px;background:radial-gradient(circle at 78% 48%,rgba(114,217,197,.14),transparent 44%),linear-gradient(145deg,#142b2b,#0c1a1f)}
+.project-copy{display:flex;flex-direction:column;align-items:flex-start;min-height:100%}
+.project-copy>span{color:var(--lime);font:10px var(--mono);letter-spacing:.1em}
+.project-copy h3{margin:auto 0 13px;font-size:clamp(43px,4.4vw,68px);line-height:.94}
+.project-title-stop{color:var(--lime)}
+.project-copy p{max-width:335px;line-height:1.7}
+.project-copy b{margin-top:26px}
+.tracker-art{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:250px;padding:17px;border:1px solid rgba(198,245,120,.36);border-radius:12px;background:linear-gradient(155deg,rgba(11,27,30,.98),rgba(20,52,48,.94));box-shadow:22px 26px 0 -12px rgba(198,245,120,.06),0 25px 55px rgba(0,0,0,.35);transform:perspective(700px) rotateY(-8deg) rotateZ(3deg);transition:transform .4s,box-shadow .4s;overflow:hidden}
+.project-tile-featured:hover .tracker-art{transform:perspective(700px) rotateY(0) rotateZ(0) translateY(-4px);box-shadow:0 28px 65px rgba(0,0,0,.43),0 0 35px rgba(114,217,197,.12)}
+.tracker-art::after{content:'';position:absolute;inset:-70% 0 auto;height:70%;pointer-events:none;background:linear-gradient(transparent,rgba(198,245,120,.055),transparent);animation:trackerScan 6s linear infinite}
+.tracker-art-head,.tracker-art-foot{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font:8px var(--mono);letter-spacing:.06em}
+.tracker-art-head span:last-child{color:var(--lime)}
+.tracker-art-foot{padding-top:10px;border-top:1px solid var(--line)}
+.tracker-flow{display:flex;flex-direction:column;align-items:stretch;gap:3px}
+.tracker-flow span{padding:9px 12px;border:1px solid rgba(114,217,197,.2);border-radius:5px;background:rgba(114,217,197,.045);color:var(--ink);font:10px var(--mono);letter-spacing:.14em}
+.tracker-flow span:nth-of-type(2){margin-left:15%}.tracker-flow span:nth-of-type(3){margin-left:30%;border-color:rgba(198,245,120,.35);color:var(--lime)}
+.tracker-flow i{margin-left:29%;color:var(--lime);font:13px/.8 var(--mono);font-style:normal}
+.tracker-flow i:nth-of-type(2){margin-left:44%}
+@keyframes trackerScan{to{transform:translateY(640%)}}
+@media(max-width:1100px){.section-rail{display:none}.project-grid{grid-template-columns:1fr 1fr}.project-tile-featured{grid-template-columns:1fr}.tracker-art{display:none}}
+@media(max-width:650px){.activity-head .text-link{max-width:125px;text-align:right;line-height:1.5}.project-grid{grid-template-columns:1fr}.project-tile-featured{min-height:480px}.tracker-art{display:flex;min-height:160px;transform:none}.tracker-flow{flex-direction:row;align-items:center}.tracker-flow span{padding:6px;font-size:7px}.tracker-flow span:nth-of-type(2),.tracker-flow span:nth-of-type(3){margin-left:0}.tracker-flow i,.tracker-flow i:nth-of-type(2){margin-left:0;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.tracker-art::after{animation:none}.project-tile-featured:hover .tracker-art{transform:none}}

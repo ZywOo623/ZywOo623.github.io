@@ -33,14 +33,14 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
         <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="打开导航"><span></span><span></span><span></span></button>
         <div id="nav-links" class="nav-links">
           <a href="/" aria-current={active === 'home' ? 'page' : undefined}>HOME</a>
-          <a href="/#arena">PROBLEMS</a>
-          <a href="/#graph">GRAPH LAB</a>
-          <a href="/#learning">LEARNING</a>
           <a href="/blog/" aria-current={active === 'blog' ? 'page' : undefined}>BLOG</a>
+          <a href="/#projects">PROJECTS</a>
+          <a href="/#learning">LEARNING</a>
+          <a href="/#arena">CF DATA</a>
           <a href="/#about">ABOUT</a>
         </div>
         <button class="command-trigger" type="button" aria-label="打开快速跳转" aria-keyshortcuts="Control+K Meta+K"><span aria-hidden="true">⌕</span><kbd>CTRL K</kbd></button>
-        <a class="nav-signal" href="https://codeforces.com/profile/ZywOo623" target="_blank" rel="noopener noreferrer"><span class="live-dot"></span> CF PROFILE ↗</a>
+        <a class="nav-signal" href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer"><span class="live-dot"></span> ALGORITHM TRACKER ↗</a>
       </nav>
     </header>
     <dialog class="command-dialog" aria-label="快速跳转">
@@ -54,6 +54,8 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
           <a href="/#manifesto" data-command-label="创作 学习 think build share"><i>✦</i><strong>创作与学习</strong><small>PROCESS</small></a>
           <a href="/#lab" data-command-label="位运算 bit lab 二进制"><i>01</i><strong>位运算实验</strong><small>BIT LAB</small></a>
           <a href="/#learning" data-command-label="学习记录 learning 算法竞赛进阶指南"><i>◎</i><strong>学习记录</strong><small>LEARNING</small></a>
+          <a href="/#projects" data-command-label="项目 projects algorithm tracker"><i>↗</i><strong>项目展示</strong><small>PROJECTS</small></a>
+          <a href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer" data-command-label="algorithm tracker Codeforces 完整刷题记录 错题复习"><i>CF</i><strong>Algorithm Tracker</strong><small>TOOL ↗</small></a>
         </div>
         <div class="command-group"><span>READ / 阅读</span>
           <a href="/blog/" data-command-label="博客 blog 文章列表"><i>↗</i><strong>全部文章</strong><small>BLOG</small></a>
@@ -63,6 +65,14 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
       <p class="command-empty" hidden>没有找到匹配内容。试试“学习”或“博客”。</p>
       <div class="command-foot"><span>↑ ↓ 浏览 · ↵ 打开 · ESC 关闭</span><span>CTRL / ⌘ + K</span></div>
     </dialog>
+    {active === 'home' && <nav class="section-rail" aria-label="首页章节导航">
+      <a href="#home" data-rail-target="home" aria-current="location"><span>01</span><b>HOME</b></a>
+      <a href="#arena" data-rail-target="arena"><span>02</span><b>CF DATA</b></a>
+      <a href="#learning" data-rail-target="learning"><span>03</span><b>LEARNING</b></a>
+      <a href="#blog-preview" data-rail-target="blog-preview"><span>04</span><b>BLOG</b></a>
+      <a href="#projects" data-rail-target="projects"><span>05</span><b>PROJECTS</b></a>
+      <a href="#about" data-rail-target="about"><span>06</span><b>ABOUT</b></a>
+    </nav>}
     <main id="main"><slot /></main>
     <footer class="site-footer">
       <div class="container footer-grid">
@@ -91,11 +101,20 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
       });
       const fill = document.querySelector<HTMLElement>('.reading-progress span');
       const header = document.querySelector<HTMLElement>('.site-header');
+      const railLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-rail-target]')];
+      const railSections = railLinks.map(link => document.getElementById(link.dataset.railTarget ?? '')).filter((section): section is HTMLElement => Boolean(section));
       let scheduled = false;
       function updateProgress() {
         const length = document.documentElement.scrollHeight - window.innerHeight;
         if (fill) fill.style.width = `${length > 0 ? Math.min(100, window.scrollY / length * 100) : 0}%`;
         header?.classList.toggle('is-floating', window.scrollY > 42);
+        if (railSections.length) {
+          const current = [...railSections].reverse().find(section => section.getBoundingClientRect().top <= window.innerHeight * .45) ?? railSections[0];
+          railLinks.forEach(link => {
+            if (link.dataset.railTarget === current.id) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+          });
+        }
         scheduled = false;
       }
       window.addEventListener('scroll', () => {
@@ -103,6 +122,28 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
       }, { passive: true });
       window.addEventListener('resize', updateProgress);
       updateProgress();
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+        const counterObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const element = entry.target as HTMLElement;
+            const goal = Number(element.dataset.count);
+            if (!Number.isFinite(goal) || goal < 0) return;
+            counterObserver.unobserve(element);
+            const start = performance.now();
+            function tick(now: number) {
+              const progress = Math.min(1, (now - start) / 1050);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              element.textContent = String(Math.round(goal * eased));
+              if (progress < 1) requestAnimationFrame(tick);
+              else element.textContent = String(goal);
+            }
+            requestAnimationFrame(tick);
+          });
+        }, { threshold: .6 });
+        counters.forEach(counter => counterObserver.observe(counter));
+      }
       if (matchMedia('(pointer:fine) and (prefers-reduced-motion:no-preference)').matches) {
         document.querySelectorAll<HTMLElement>('.latest-card, .article-card > a').forEach(card => {
           card.addEventListener('pointermove', event => {
