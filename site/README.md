@@ -21,4 +21,4 @@ pnpm build
 
 ## Publish
 
-GitHub Actions builds and deploys this directory on pushes to `main` and once daily for the Codeforces snapshot. In repository **Settings → Pages**, select **GitHub Actions** as the source for automatic publishing. The repository root also contains a generated static copy for the existing branch based Pages setup. To refresh that copy locally, run `pnpm build` and `pnpm export:root` before committing.
+GitHub Actions builds and deploys this directory on pushes to `main` and once daily for the Codeforces snapshot. The repository root also contains a generated static copy for the existing branch based Pages setup. To refresh that copy locally, run `pnpm build` and `pnpm export:root` before committing.
