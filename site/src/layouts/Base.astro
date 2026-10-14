@@ -185,7 +185,7 @@ const commandPosts = (await getCollection('blog')).sort((a, b) => b.data.date.ge
         });
       }
       if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
-        const reveal = document.querySelectorAll<HTMLElement>('.section-heading, .stat-card, .activity-panel, .graph-console, .bit-console, .learning-row, .latest-card, .project-tile, .blog-hero-grid, .article-card');
+        const reveal = document.querySelectorAll<HTMLElement>('.section-heading, .stat-card, .activity-panel, .interactive-reveal, .learning-row, .latest-card, .project-tile, .blog-hero-grid, .article-card');
         const observer = new IntersectionObserver(entries => {
           entries.forEach(entry => {
             if (!entry.isIntersecting) return;

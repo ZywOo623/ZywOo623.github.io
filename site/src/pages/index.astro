@@ -89,7 +89,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
     <div class="container">
       <div class="section-kicker"><span>02 / INTERACTIVE</span><span>ALGORITHM PLAYGROUND</span></div>
       <div class="section-heading"><div><span class="kicker">RUN THE ALGORITHM</span><h2 id="graph-title">Don't just watch.<br /><em>Change the graph.</em></h2></div><p>选择起点与终点，关闭一条边，再逐步观察 Dijkstra 怎样更新距离。每一次操作都会重新计算最短路。</p></div>
-      <GraphLab client:visible />
+      <div class="interactive-reveal"><GraphLab client:visible /></div>
     </div>
   </section>
 
@@ -110,7 +110,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
     <div class="container">
       <div class="section-kicker"><span>04 / BIT LAB</span><span>01 00 11 01</span></div>
       <div class="section-heading"><div><span class="kicker">TOUCH THE BITS</span><h2 id="bit-title">Think in <em>bits.</em></h2></div><p>点亮或关闭一个二进制位，看看数值、popcount 与 lowbit 如何一起改变。</p></div>
-      <BitLab client:visible />
+      <div class="interactive-reveal"><BitLab client:visible /></div>
     </div>
   </section>
 
