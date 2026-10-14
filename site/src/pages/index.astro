@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import GraphLab from '../components/GraphLab.jsx';
 import BitLab from '../components/BitLab.jsx';
+import TrackerPreview from '../components/TrackerPreview.jsx';
 import codeforces from '../data/codeforces.json';
 
 const posts = await getCollection('blog');
@@ -143,10 +144,10 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
       <div class="section-kicker"><span>07 / PROJECTS</span><span>LEARNING BY BUILDING</span></div>
       <div class="section-heading"><div><span class="kicker">SELECTED WORK</span><h2 id="projects-title">Built to<br /><em>learn better.</em></h2></div><p>Algorithm Tracker 承载完整训练记录；这里展示项目入口与公开的创作过程。</p></div>
       <div class="project-grid">
-        <a href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer" class="project-tile project-tile-featured">
-          <div class="project-copy"><span>01 / FEATURED PROJECT · CODEFORCES</span><h3>Algorithm<br />Tracker<span class="project-title-stop">.</span></h3><p>刷题记录、错题复习和训练分析，集中在一个独立工具中。</p><b>打开完整项目 ↗</b></div>
-          <div class="tracker-art" aria-hidden="true"><div class="tracker-art-head"><span>ZY / TRACKER</span><span>● ONLINE</span></div><div class="tracker-flow"><span>PROBLEMS</span><i>↘</i><span>REVIEW</span><i>↘</i><span>INSIGHTS</span></div><div class="tracker-art-foot"><span>CF DATA</span><span>TRAINING SYSTEM</span></div></div>
-        </a>
+        <article class="project-tile project-tile-featured">
+          <div class="project-copy"><span>01 / FEATURED PROJECT · CODEFORCES</span><h3>Algorithm<br />Tracker<span class="project-title-stop">.</span></h3><p>刷题记录、错题复习和训练分析，集中在一个独立工具中。</p><a href="https://zywoo623.github.io/algorithm-tracker/" target="_blank" rel="noopener noreferrer">打开完整项目 ↗</a></div>
+          <TrackerPreview client:visible />
+        </article>
         <a href="#graph" class="project-tile"><span>02 / INTERACTIVE</span><h3>Graph Lab</h3><p>动手改变图，观察最短路算法运行。</p><b>开始探索 ↗</b></a>
       </div>
     </div>
