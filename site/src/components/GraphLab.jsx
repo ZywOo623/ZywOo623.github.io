@@ -83,7 +83,7 @@ export default function GraphLab() {
       <div className="graph-layout">
         <div className="graph-stage-wrap">
           <div className="graph-stage" ref={stageRef} aria-label="带权无向图">
-            <svg viewBox="0 0 720 440" role="img" aria-label="七个节点组成的带权图，边和权重显示在图中">
+            <svg viewBox="0 0 720 440" preserveAspectRatio="none" role="img" aria-label="七个节点组成的带权图；边权可在图下方查看">
               {edges.map(edge => {
                 const a = graphNodes.find(node => node.id === edge.a);
                 const b = graphNodes.find(node => node.id === edge.b);
@@ -112,7 +112,7 @@ export default function GraphLab() {
               );
             })}
           </div>
-          <p className="graph-hint">点击节点可设置终点；下方可关闭或恢复任意边。</p>
+          <p className="graph-hint">点击节点可设置终点；下方按钮显示边权，并可关闭或恢复任意边。</p>
           <div className="graph-edge-controls" role="group" aria-label="切换图中的边">
             {edges.map(edge => (
               <button

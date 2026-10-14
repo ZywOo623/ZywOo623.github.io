@@ -165,3 +165,36 @@ body::before{background-image:radial-gradient(460px circle at var(--cursor-x,75%
 .brand-mark{overflow:hidden;border-color:rgba(203,158,207,.8);background:#d9c8df;box-shadow:0 0 0 3px rgba(203,158,207,.08),0 0 23px rgba(203,158,207,.18)}
 .brand-mark img{display:block;width:100%;height:100%;object-fit:cover}
 .brand:hover .brand-mark{box-shadow:0 0 0 3px rgba(203,158,207,.15),0 0 30px rgba(203,158,207,.34)}
+
+/* Keep the reveal and interactive diagram inside narrow phone viewports. */
+@media(max-width:650px){
+  .signal-strip{transform:none}
+  .unveil-seam span{display:none}
+  .unveil-scene.is-live:not(.is-open) .unveil-sticky::after{content:'↓ SCROLL TO REVEAL';position:absolute;z-index:14;top:65%;left:50%;transform:translateX(-50%);padding:8px 12px;border:1px solid rgba(198,245,120,.35);border-radius:100px;background:rgba(7,17,22,.78);color:var(--lime);font:9px var(--mono);letter-spacing:.12em;white-space:nowrap;pointer-events:none;opacity:var(--seam-opacity,1)}
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:4px;padding-top:38px;padding-bottom:20px}
+  .hero-copy{min-width:0;padding:0}
+  .hero-index{display:none}
+  .hero-machine{width:100%;min-width:0;height:250px;min-height:0;margin-top:8px}
+  .machine-orbit-outer{width:70%}
+  .machine-orbit-inner{width:52%}
+  .machine-card{width:84%}
+  .machine-card-head,.machine-card-foot{padding:10px 12px;font-size:9px}
+  .machine-code{padding:12px 11px;font-size:10px;line-height:1.65}
+  .graph-stage{width:100%;min-height:0;aspect-ratio:1.45}
+  .graph-stage svg{display:block}
+  .graph-edge rect,.graph-edge text{display:none}
+  .graph-selects label{white-space:nowrap}
+}
+@media(max-width:900px){
+  .nav-links{visibility:hidden}
+  .menu-open .nav-links{visibility:visible}
+}
+@media(max-width:360px), (max-height:740px) and (max-width:650px){
+  .hero h1{font-size:clamp(43px,13vw,51px)}
+  .hero h1 em{white-space:normal}
+  .hero-machine{height:185px;margin-top:0}
+  .hero-lead{margin:21px 0;font-size:14px;line-height:1.65}
+  .hero-actions .action{min-width:0;min-height:40px;padding:9px 11px;font-size:10px}
+  .hero-bottom{display:none}
+  .machine-float{display:none}
+}
