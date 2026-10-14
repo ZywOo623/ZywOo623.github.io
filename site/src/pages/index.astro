@@ -17,6 +17,15 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
     <div class="unveil-sticky">
       <div class="hero" aria-labelledby="hero-heading">
     <canvas class="hero-constellation" aria-hidden="true"></canvas>
+    <div class="depth-space" aria-hidden="true">
+      <div class="depth-glow"></div>
+      <div class="depth-grid"></div>
+      <div class="depth-ring depth-ring-outer"></div>
+      <div class="depth-ring depth-ring-inner"></div>
+      <div class="depth-core"></div>
+      <div class="depth-fragments"><span>0101 / SIGNAL</span><span>&lt;DATA STREAM /&gt;</span><span>10110100</span><span>NODE_623</span><span>00101101</span><span>O(log n)</span></div>
+      <div class="depth-message"><small>LEVEL 02 / DATA BELOW</small><strong>GO DEEPER<span>.</span></strong><span>SCROLL INTO THE SIGNALS ↓</span></div>
+    </div>
     <div class="hero-field" aria-hidden="true"><span>00101101</span><span>10110010</span><span>01010110</span><span>11001001</span></div>
     <div class="container hero-grid">
       <div class="hero-copy">
@@ -188,11 +197,25 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
       function updateScene() {
         if (!scene) return;
         // Open during the first screen of scrolling, then leave time to read the revealed hero.
+        const travelled = -scene.getBoundingClientRect().top;
         const distance = Math.max(1, Math.min(scene.offsetHeight - innerHeight, innerHeight * .8));
-        const phase = Math.min(1, Math.max(0, -scene.getBoundingClientRect().top / distance));
+        const phase = Math.min(1, Math.max(0, travelled / distance));
+        const diveDistance = Math.max(1, scene.offsetHeight - innerHeight - innerHeight * 1.05);
+        const dive = Math.min(1, Math.max(0, (travelled - innerHeight * 1.05) / diveDistance));
+        const heroExit = Math.min(1, Math.max(0, (dive - .36) / .36));
         scene.style.setProperty('--left', `${-103 * phase}%`);
         scene.style.setProperty('--right', `${103 * phase}%`);
         scene.style.setProperty('--seam-opacity', String(Math.max(0, 1 - phase * 2)));
+        scene.style.setProperty('--dive', String(dive));
+        scene.style.setProperty('--depth-opacity', String(Math.min(1, dive * 1.8)));
+        scene.style.setProperty('--depth-scale', String(.55 + dive * 2.45));
+        scene.style.setProperty('--depth-grid-y', `${Math.round(dive * 240)}px`);
+        scene.style.setProperty('--depth-fragment-y', `${Math.round(dive * -125)}px`);
+        scene.style.setProperty('--hero-opacity', String(1 - heroExit));
+        scene.style.setProperty('--hero-lift', `${Math.round(heroExit * -75)}px`);
+        scene.style.setProperty('--depth-message-opacity', String(Math.min(1, Math.max(0, (dive - .72) / .22))));
+        scene.style.setProperty('--counter-opacity', String(Math.max(0, 1 - dive * 4)));
+        scene.classList.toggle('is-deep', dive > .87);
         scene.classList.toggle('is-open', phase > .98);
         if (phase > .82) revealCode();
         if (skip) skip.hidden = phase > .98;

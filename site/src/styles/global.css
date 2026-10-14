@@ -207,3 +207,26 @@ body::before{background-image:radial-gradient(460px circle at var(--cursor-x,75%
   .hero-bottom{display:none}
   .machine-float{display:none}
 }
+
+/* A reversible, scroll-driven descent from the opening curtain into the data. */
+.unveil-scene.is-live{height:280svh}
+.unveil-scene .hero-grid{opacity:var(--hero-opacity,1);transform:translate3d(0,var(--hero-lift,0px),0)}
+.unveil-scene .hero-bottom,.unveil-scene .hero-field{opacity:var(--hero-opacity,1)}
+.unveil-scene.is-deep .hero-grid{pointer-events:none}
+.unveil-counter{opacity:var(--counter-opacity,1)}
+.depth-space{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;opacity:var(--depth-opacity,0);background:radial-gradient(ellipse at 50% 44%,rgba(15,103,116,.42),transparent 48%),linear-gradient(180deg,rgba(5,26,38,.7),#041720 78%)}
+.depth-glow{position:absolute;inset:-20%;background:radial-gradient(ellipse at 50% 53%,rgba(59,218,208,.2),transparent 24%),radial-gradient(ellipse at 50% 78%,rgba(16,122,145,.22),transparent 52%);transform:scale(var(--depth-scale,.55))}
+.depth-grid{position:absolute;left:-50%;right:-50%;top:28%;height:110%;background-image:linear-gradient(rgba(114,217,197,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(114,217,197,.16) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at 50% 47%,#000 7%,transparent 72%);transform-origin:50% 15%;transform:perspective(650px) rotateX(69deg) translateY(var(--depth-grid-y,0px)) scale(1.35)}
+.depth-ring{position:absolute;top:50%;left:50%;width:min(54vw,72vh);aspect-ratio:1;border:1px solid rgba(114,217,197,.45);border-radius:50%;box-shadow:0 0 38px rgba(35,185,183,.13),inset 0 0 38px rgba(35,185,183,.12);transform:translate(-50%,-50%) scale(var(--depth-scale,.55))}
+.depth-ring::before,.depth-ring::after{content:'';position:absolute;inset:10%;border:1px dashed rgba(198,245,120,.22);border-radius:50%}.depth-ring::after{inset:-19%;border-color:rgba(114,217,197,.17);border-style:solid}
+.depth-ring-inner{width:min(27vw,35vh);border-color:rgba(198,245,120,.55);transform:translate(-50%,-50%) scale(var(--depth-scale,.55))}
+.depth-ring-inner::before,.depth-ring-inner::after{display:none}
+.depth-core{position:absolute;top:50%;left:50%;width:15px;height:15px;border-radius:50%;background:var(--cyan);box-shadow:0 0 30px var(--cyan),0 0 95px rgba(114,217,197,.75);transform:translate(-50%,-50%) scale(var(--depth-scale,.55))}
+.depth-fragments span{position:absolute;color:rgba(176,242,225,.67);font:10px var(--mono);letter-spacing:.18em;text-shadow:0 0 16px rgba(114,217,197,.45);transform:translateY(var(--depth-fragment-y,0px))}
+.depth-fragments span:nth-child(1){top:22%;left:14%}.depth-fragments span:nth-child(2){top:36%;right:11%}.depth-fragments span:nth-child(3){top:63%;left:22%}.depth-fragments span:nth-child(4){top:71%;right:20%}.depth-fragments span:nth-child(5){top:13%;right:30%}.depth-fragments span:nth-child(6){top:79%;left:46%}
+.depth-message{position:absolute;z-index:2;top:50%;left:50%;display:flex;flex-direction:column;align-items:center;gap:19px;width:min(90%,850px);text-align:center;opacity:var(--depth-message-opacity,0);transform:translate(-50%,-50%)}
+.depth-message small,.depth-message>span{color:#a7e8d8;font:10px var(--mono);letter-spacing:.23em}
+.depth-message strong{color:#effff9;font:700 clamp(62px,10vw,150px)/.9 var(--display);letter-spacing:-.09em;white-space:nowrap;text-shadow:0 0 80px rgba(114,217,197,.28)}
+.depth-message strong span{color:var(--lime)}
+@media(max-width:650px){.unveil-scene.is-live{height:250svh}.depth-grid{background-size:48px 48px}.depth-ring{width:80vw}.depth-ring-inner{width:43vw}.depth-fragments span{font-size:8px}.depth-fragments span:nth-child(2),.depth-fragments span:nth-child(3),.depth-fragments span:nth-child(5),.depth-fragments span:nth-child(6){display:none}.depth-message{gap:15px}.depth-message strong{font-size:clamp(47px,13vw,75px)}.depth-message small,.depth-message>span{font-size:8px;letter-spacing:.13em}}
+@media(prefers-reduced-motion:reduce){.depth-space{display:none}.unveil-scene .hero-grid,.unveil-scene .hero-bottom,.unveil-scene .hero-field,.unveil-counter{opacity:1;transform:none}}
