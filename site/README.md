@@ -4,7 +4,7 @@ This is the source for [zywoo623.github.io](https://zywoo623.github.io/). Astro 
 
 ## Edit an article
 
-Add a Markdown file under `src/content/blog/` and include `title`, `date`, `category`, `series`, `description`, and `tags` in its frontmatter. The file name becomes its public URL under `/blog/`. The guide series is ordered by its `0xNN` file name. Private Obsidian notes should be edited and reviewed before copying content here.
+Add a Markdown file under `src/content/blog/` and include `title`, `date`, `category`, `series`, `description`, and `tags` in its frontmatter. Guide articles can also set `chapter` for the Learning list. The file name becomes its public URL under `/blog/`, and guide posts are ordered by their `0xNN` file names. The Blog, Learning list, and latest posts update automatically from published Markdown. Private Obsidian notes should be edited and reviewed before copying content here.
 
 ## Work locally
 

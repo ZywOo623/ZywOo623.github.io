@@ -130,8 +130,7 @@ const snapshotDate = codeforces.status === 'ok' ? codeforces.fetchedAt.slice(0, 
       <div class="section-kicker"><span>05 / LEARNING</span><span>FROM STUDY TO PUBLIC NOTES</span></div>
       <div class="section-heading"><div><span class="kicker">ALGORITHM GUIDE</span><h2 id="learning-title">A growing<br /><em>knowledge map.</em></h2></div><p>Learning 记录我在学什么；Blog 收录已经整理、愿意公开分享的内容。状态只表示文章是否发布。</p></div>
       <div class="learning-list">
-        {guide.map((post, index) => <a href={`/blog/${slug(post)}/`} class="learning-row"><span class="learning-index">{String(index + 1).padStart(2, '0')}</span><strong>{post.id.split('/').at(-1)?.startsWith('0x01') ? '0x01 位运算' : '0x02 递推与递归'}</strong><span class="learning-status"><i></i> 已发布</span><span class="learning-arrow">查看笔记 ↗</span></a>)}
-        <div class="learning-row is-upcoming"><span class="learning-index">03</span><strong>下一篇学习笔记</strong><span class="learning-status">等待整理</span><span class="learning-arrow">COMING NEXT</span></div>
+        {guide.map((post, index) => <a href={`/blog/${slug(post)}/`} class="learning-row"><span class="learning-index">{String(index + 1).padStart(2, '0')}</span><strong>{post.data.chapter ?? post.data.title}</strong><span class="learning-status"><i></i> 已发布</span><span class="learning-arrow">查看笔记 ↗</span></a>)}
       </div>
       <div class="learning-bridge"><span>PRIVATE NOTES</span><b>→</b><span>PUBLIC ARTICLE</span><p>完整学习过程留在私人笔记；这里展示整理后的公开成果。</p></div>
     </div>

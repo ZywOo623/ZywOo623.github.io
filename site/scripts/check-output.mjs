@@ -30,13 +30,16 @@ const snapshot = JSON.parse(await readFile(new URL('../src/data/codeforces.json'
 const archive = await readFile(join(dist, 'blog/index.html'), 'utf8');
 const first = await readFile(join(dist, 'blog/0x01-bit-operation/index.html'), 'utf8');
 const second = await readFile(join(dist, 'blog/0x02-recursion/index.html'), 'utf8');
+const third = await readFile(join(dist, 'blog/0x03-prefix-sum-difference/index.html'), 'utf8');
 const solvedCard = index.slice(index.indexOf('PROBLEMS SOLVED'), index.indexOf('PROBLEMS SOLVED') + 400);
 if (snapshot.status === 'ok' && !solvedCard.includes(`data-count="${snapshot.solved}"`)) errors.push('Codeforces snapshot is not displayed');
 if (snapshot.status !== 'ok' && !index.includes('数据暂时无法同步')) errors.push('Codeforces fallback is not displayed');
 if (!index.includes('/blog/0x01-bit-operation/')) errors.push('Learning to Blog link is missing');
+if (!index.includes('/blog/0x03-prefix-sum-difference/') || !index.includes('0x03 前缀和与差分')) errors.push('0x03 Learning link or chapter label is missing');
 const articleGrid = archive.slice(archive.indexOf('class="article-grid"'));
-if (!archive.includes('class="article-grid"') || articleGrid.indexOf('0x01-bit-operation') >= articleGrid.indexOf('0x02-recursion')) errors.push('Guide series is not ordered 0x01 then 0x02');
+if (!archive.includes('class="article-grid"') || articleGrid.indexOf('0x01-bit-operation') >= articleGrid.indexOf('0x02-recursion') || articleGrid.indexOf('0x02-recursion') >= articleGrid.indexOf('0x03-prefix-sum-difference')) errors.push('Guide series is not ordered 0x01 to 0x03');
 if (!first.includes('class="katex') || !first.includes('<pre') || !first.includes('data-language="cpp"')) errors.push('0x01 article lost math or C++ formatting');
 if (!second.includes('CF550B') || !second.includes('data-language="cpp"')) errors.push('0x02 article content or C++ formatting is missing');
+if (!third.includes('CF295A') || !third.includes('class="katex') || !third.includes('data-language="cpp"')) errors.push('0x03 article content, math or C++ formatting is missing');
 if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
 else console.log(`Checked ${pages.length} HTML pages: internal links, article order, Markdown, math, code and Learning links are valid.`);
